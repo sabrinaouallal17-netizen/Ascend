@@ -19,11 +19,23 @@ An RPG leveling mod for **Minecraft 1.21.1** (Fabric).
 | Agility | +0.4% movement speed | +20% |
 | Mining | +1% mining speed | +50% |
 
+## Ascend EXP Bottle
+
+Right-click to drink: **+100 Ascend XP**, and you get the empty glass bottle back (not used up at max level).
+Found in the Tools & Utilities creative tab, or crafted:
+
+```
+Gold nugget | Lapis lazuli | Gold nugget
+Lapis lazuli | Glass bottle | Lapis lazuli
+Gold nugget | Lapis lazuli | Gold nugget
+```
+
 Progress is saved with the player and kept on death. Creative and spectator players don't earn XP.
 
 ### Commands (operators)
 
-- `/ascend addxp <amount>`: give yourself XP.
+- `/asxp add <amount> [player]`: give Ascend XP (levels up normally).
+- `/asxp set <level> [player]`: set the level directly (1 to 200). Skill points are recalculated.
 - `/ascend reset`: reset your level, XP and stats.
 
 ## Build

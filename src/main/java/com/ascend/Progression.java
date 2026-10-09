@@ -51,6 +51,11 @@ public final class Progression {
 		}
 	}
 
+	public static void setLevel(ServerPlayerEntity player, int level) {
+		get(player).setLevel(level);
+		refresh(player);
+	}
+
 	public static void reset(ServerPlayerEntity player) {
 		player.setAttached(AscendData.PROGRESS, new PlayerProgress());
 		refresh(player);

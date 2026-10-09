@@ -1,5 +1,6 @@
 package com.ascend;
 
+import com.ascend.item.AscendItems;
 import com.ascend.network.SpendPayload;
 import com.ascend.network.SyncPayload;
 import net.fabricmc.api.ModInitializer;
@@ -22,6 +23,7 @@ public class Ascend implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		AscendData.init();
+		AscendItems.init();
 		PayloadTypeRegistry.playS2C().register(SyncPayload.ID, SyncPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(SpendPayload.ID, SpendPayload.CODEC);
 

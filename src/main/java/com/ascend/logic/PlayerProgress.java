@@ -67,6 +67,22 @@ public final class PlayerProgress {
 		return gained;
 	}
 
+	/**
+	 * Sets the level directly (XP into the level goes back to 0). Points are recalculated so the player
+	 * always has one point per level gained; if more were already spent, the stats are refunded.
+	 */
+	public void setLevel(int newLevel) {
+		level = Math.max(1, Math.min(Leveling.MAX_LEVEL, newLevel));
+		xp = 0;
+		int earned = level - 1;
+		int spent = Arrays.stream(stats).sum();
+		if (spent > earned) {
+			Arrays.fill(stats, 0);
+			spent = 0;
+		}
+		points = earned - spent;
+	}
+
 	public boolean canSpend(Stat stat) {
 		return points > 0 && stats[stat.ordinal()] < Stat.CAP;
 	}

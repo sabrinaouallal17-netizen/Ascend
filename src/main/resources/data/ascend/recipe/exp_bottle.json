@@ -1,0 +1,24 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"pattern": [
+		"NLN",
+		"LBL",
+		"NLN"
+	],
+	"key": {
+		"N": {
+			"item": "minecraft:gold_nugget"
+		},
+		"L": {
+			"item": "minecraft:lapis_lazuli"
+		},
+		"B": {
+			"item": "minecraft:glass_bottle"
+		}
+	},
+	"result": {
+		"id": "ascend:exp_bottle",
+		"count": 1
+	}
+}

@@ -73,4 +73,46 @@ class PlayerProgressTest {
 		assertEquals(0, progress.points());
 		assertEquals(4, progress.stats().length);
 	}
+
+	@Test
+	void setLevelGivesOnePointPerLevel() {
+		PlayerProgress progress = new PlayerProgress();
+		progress.setLevel(50);
+		assertEquals(50, progress.level());
+		assertEquals(0, progress.xp());
+		assertEquals(49, progress.points());
+	}
+
+	@Test
+	void setLevelKeepsSpentPointsWhenPossible() {
+		PlayerProgress progress = new PlayerProgress();
+		progress.setLevel(11);
+		progress.spend(Stat.STRENGTH);
+		progress.spend(Stat.STRENGTH);
+		progress.setLevel(21);
+		assertEquals(2, progress.stat(Stat.STRENGTH));
+		assertEquals(18, progress.points());
+	}
+
+	@Test
+	void setLevelLowerRefundsStats() {
+		PlayerProgress progress = new PlayerProgress();
+		progress.setLevel(11);
+		for (int i = 0; i < 10; i++) {
+			progress.spend(Stat.AGILITY);
+		}
+		progress.setLevel(5);
+		assertEquals(0, progress.stat(Stat.AGILITY));
+		assertEquals(4, progress.points());
+	}
+
+	@Test
+	void setLevelIsClamped() {
+		PlayerProgress progress = new PlayerProgress();
+		progress.setLevel(500);
+		assertEquals(Leveling.MAX_LEVEL, progress.level());
+		progress.setLevel(-3);
+		assertEquals(1, progress.level());
+		assertEquals(0, progress.points());
+	}
 }
