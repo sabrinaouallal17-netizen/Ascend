@@ -4,5 +4,18 @@
 	"item.ascend.exp_bottle": "Bouteille d'EXP Ascend",
 	"item.ascend.large_exp_bottle": "Grande bouteille d'EXP Ascend",
 	"item.ascend.legendary_exp_bottle": "Bouteille d'EXP Ascend légendaire",
-	"item.ascend.tome_of_rebirth": "Tome de Renaissance"
+	"item.ascend.tome_of_rebirth": "Tome de Renaissance",
+	"key.ascend.skill_1": "Compétence 1",
+	"key.ascend.skill_2": "Compétence 2",
+	"key.ascend.skill_3": "Compétence 3",
+	"entity.ascend.shadow_assassin": "Assassin des Ombres",
+	"item.ascend.shadow_dagger": "Dague des Ombres",
+	"item.ascend.shadow_pickaxe": "Pioche des Ombres",
+	"item.ascend.shadow_axe": "Hache des Ombres",
+	"item.ascend.shadow_helmet": "Casque des Ombres",
+	"item.ascend.shadow_chestplate": "Plastron des Ombres",
+	"item.ascend.shadow_leggings": "Jambières des Ombres",
+	"item.ascend.shadow_boots": "Bottes des Ombres",
+	"item.ascend.shadow_sigil": "Sceau des Ombres",
+	"item.ascend.shadow_assassin_spawn_egg": "Œuf d'apparition d'Assassin des Ombres"
 }

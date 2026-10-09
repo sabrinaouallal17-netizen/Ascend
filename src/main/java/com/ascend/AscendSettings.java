@@ -21,6 +21,8 @@ public class AscendSettings extends PersistentState {
 	public boolean milestones = true;
 	/** Show "[Lv X]" above players' heads. */
 	public boolean levelTags = true;
+	/** Give hostile mobs random levels. */
+	public boolean mobLevels = true;
 
 	public static AscendSettings get(MinecraftServer server) {
 		return server.getOverworld().getPersistentStateManager().getOrCreate(TYPE, "ascend_settings");
@@ -40,6 +42,9 @@ public class AscendSettings extends PersistentState {
 		if (nbt.contains("levelTags")) {
 			settings.levelTags = nbt.getBoolean("levelTags");
 		}
+		if (nbt.contains("mobLevels")) {
+			settings.mobLevels = nbt.getBoolean("mobLevels");
+		}
 		return settings;
 	}
 
@@ -49,6 +54,7 @@ public class AscendSettings extends PersistentState {
 		nbt.putDouble("xpMultiplier", xpMultiplier);
 		nbt.putBoolean("milestones", milestones);
 		nbt.putBoolean("levelTags", levelTags);
+		nbt.putBoolean("mobLevels", mobLevels);
 		return nbt;
 	}
 }

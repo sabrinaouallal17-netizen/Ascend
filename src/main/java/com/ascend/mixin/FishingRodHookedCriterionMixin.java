@@ -1,6 +1,7 @@
 package com.ascend.mixin;
 
 import com.ascend.XpSources;
+import com.ascend.logic.Counter;
 import com.ascend.logic.XpRewards;
 import java.util.Collection;
 import net.minecraft.advancement.criterion.FishingRodHookedCriterion;
@@ -19,7 +20,7 @@ public abstract class FishingRodHookedCriterionMixin {
 	private void ascend$onFish(ServerPlayerEntity player, ItemStack rod, FishingBobberEntity bobber,
 			Collection<ItemStack> fishingLoots, CallbackInfo ci) {
 		if (!fishingLoots.isEmpty()) {
-			XpSources.onActivity(player, XpRewards.FISHING);
+			XpSources.onActivity(player, XpRewards.FISHING, Counter.FISH);
 		}
 	}
 }

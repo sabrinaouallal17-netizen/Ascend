@@ -1,7 +1,6 @@
 package com.ascend.client;
 
 import com.ascend.logic.Leveling;
-import com.ascend.logic.Milestone;
 import com.ascend.logic.PlayerProgress;
 import com.ascend.logic.Stat;
 import com.ascend.network.SpendPayload;
@@ -10,45 +9,51 @@ import java.util.List;
 import java.util.Locale;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 
-/** The character screen (K): level, XP bar, skill points and the four stats. */
-public class CharacterScreen extends Screen {
-	private static final int PANEL_WIDTH = 260;
-	private static final int PANEL_HEIGHT = 246;
-	private static final int ROW_HEIGHT = 22;
-	private static final int MILESTONE_ROW = 12;
-	private static final int GOLD = 0xFFFFAA00;
-	private static final int WHITE = 0xFFFFFFFF;
-	private static final int GRAY = 0xFFAAAAAA;
-	private static final int GREEN = 0xFF55FF55;
+/** Stats tab: level, XP bar, skill points and the four stats, with an amount box to spend many points at once. */
+public class CharacterScreen extends AscendScreen {
+	private static final int ROW_HEIGHT = 26;
+	private static final int STATS_TOP = 92;
 
 	private final List<ButtonWidget> plusButtons = new ArrayList<>();
+	private TextFieldWidget amountField;
 
 	public CharacterScreen() {
-		super(Text.literal("Ascend"));
-	}
-
-	private int left() {
-		return (width - PANEL_WIDTH) / 2;
-	}
-
-	private int top() {
-		return (height - PANEL_HEIGHT) / 2;
+		super("Ascend - Stats");
 	}
 
 	@Override
-	protected void init() {
+	protected Tab tab() {
+		return Tab.STATS;
+	}
+
+	@Override
+	protected void initContent() {
+		amountField = new TextFieldWidget(textRenderer, left() + PANEL_WIDTH - 52, top() + 68, 34, 14, Text.literal("Amount"));
+		amountField.setMaxLength(2);
+		amountField.setTextPredicate(text -> text.matches("\\d*"));
+		amountField.setText("1");
+		addDrawableChild(amountField);
+
 		plusButtons.clear();
 		for (Stat stat : Stat.values()) {
-			int y = top() + 72 + stat.ordinal() * ROW_HEIGHT;
+			int y = top() + STATS_TOP + stat.ordinal() * ROW_HEIGHT;
 			plusButtons.add(addDrawableChild(ButtonWidget.builder(Text.literal("+"),
-					button -> ClientPlayNetworking.send(new SpendPayload(stat.ordinal())))
-					.dimensions(left() + PANEL_WIDTH - 32, y - 4, 20, 20).build()));
+					button -> ClientPlayNetworking.send(new SpendPayload(stat.ordinal(), amount())))
+					.dimensions(left() + PANEL_WIDTH - 32, y - 5, 20, 18).build()));
 		}
 		refreshButtons();
+	}
+
+	private int amount() {
+		try {
+			return Math.max(1, Integer.parseInt(amountField.getText()));
+		} catch (NumberFormatException empty) {
+			return 1;
+		}
 	}
 
 	private void refreshButtons() {
@@ -64,24 +69,17 @@ public class CharacterScreen extends Screen {
 	}
 
 	@Override
-	public boolean shouldPause() {
-		return false;
-	}
-
-	@Override
 	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
 		super.render(context, mouseX, mouseY, delta);
 		PlayerProgress progress = AscendClient.progress;
 		int left = left();
-		int top = top();
+		int top = top() + CONTENT_TOP;
 
-		context.drawCenteredTextWithShadow(textRenderer, Text.literal("ASCEND"), width / 2, top + 8, GOLD);
-		context.drawCenteredTextWithShadow(textRenderer,
-				Text.literal("Level " + progress.level() + " / " + Leveling.MAX_LEVEL), width / 2, top + 24, WHITE);
-
+		context.drawCenteredTextWithShadow(textRenderer, Text.literal("Level " + progress.level() + " / " + Leveling.MAX_LEVEL),
+				width / 2, top + 4, WHITE);
 		int barLeft = left + 20;
 		int barWidth = PANEL_WIDTH - 40;
-		int barTop = top + 38;
+		int barTop = top + 16;
 		int needed = Leveling.xpToNextLevel(progress.level());
 		int filled = progress.isMaxLevel() ? barWidth : (int) ((long) barWidth * progress.xp() / needed);
 		context.fill(barLeft, barTop, barLeft + barWidth, barTop + 6, 0xFF222222);
@@ -89,34 +87,16 @@ public class CharacterScreen extends Screen {
 		String xpText = progress.isMaxLevel() ? "MAX LEVEL" : progress.xp() + " / " + needed + " XP";
 		context.drawCenteredTextWithShadow(textRenderer, Text.literal(xpText), width / 2, barTop + 9, GRAY);
 
-		context.drawTextWithShadow(textRenderer, Text.literal("Skill points: " + progress.points()),
-				left + 20, top + 56, progress.points() > 0 ? GREEN : GRAY);
+		text(context, "Skill points: " + progress.points(), left + 20, top() + 71, progress.points() > 0 ? GREEN : GRAY);
+		rightText(context, "Amount:", left + PANEL_WIDTH - 56, top() + 71, GRAY);
 
 		for (Stat stat : Stat.values()) {
-			int y = top + 72 + stat.ordinal() * ROW_HEIGHT;
+			int y = top() + STATS_TOP + stat.ordinal() * ROW_HEIGHT;
 			int points = progress.stat(stat);
-			context.drawTextWithShadow(textRenderer, Text.literal(stat.displayName()), left + 20, y, WHITE);
-			context.drawTextWithShadow(textRenderer, Text.literal(points + "/" + Stat.CAP), left + 95, y, GRAY);
-			context.drawTextWithShadow(textRenderer, Text.literal(bonusText(stat, points)), left + 135, y, GREEN);
+			text(context, stat.displayName(), left + 20, y, WHITE);
+			text(context, points + "/" + Stat.CAP, left + 95, y, GRAY);
+			text(context, bonusText(stat, points), left + 140, y, GREEN);
 		}
-
-		int milestonesTop = top + 72 + Stat.values().length * ROW_HEIGHT + 4;
-		context.drawTextWithShadow(textRenderer, Text.literal("Milestones"), left + 20, milestonesTop, GOLD);
-		for (Milestone milestone : Milestone.values()) {
-			int y = milestonesTop + 14 + milestone.ordinal() * MILESTONE_ROW;
-			boolean unlocked = milestone.unlockedAt(progress.level());
-			String line = (unlocked ? "✔ " : "Lv " + milestone.level() + " ") + milestone.title() + ": " + milestone.description();
-			context.drawTextWithShadow(textRenderer, Text.literal(line), left + 20, y, unlocked ? GREEN : GRAY);
-		}
-	}
-
-	@Override
-	public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-		super.renderBackground(context, mouseX, mouseY, delta);
-		int left = left();
-		int top = top();
-		context.fill(left - 1, top - 1, left + PANEL_WIDTH + 1, top + PANEL_HEIGHT + 1, 0xFFFFAA00);
-		context.fill(left, top, left + PANEL_WIDTH, top + PANEL_HEIGHT, 0xF0101018);
 	}
 
 	private static String bonusText(Stat stat, int points) {

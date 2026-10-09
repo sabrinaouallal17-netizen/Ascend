@@ -1,20 +1,25 @@
 package com.ascend.logic;
 
-/** Multiplies XP earned from gameplay (not from bottles or commands). */
+import java.util.Set;
+
+/** Multiplies XP earned from gameplay (not from bottles, commands or achievement rewards). */
 public final class XpMultiplier {
 	private XpMultiplier() {
 	}
 
 	/**
-	 * @param setting           the world's xpMultiplier setting
-	 * @param milestonesEnabled whether milestone rewards are enabled in this world
+	 * @param unlocked the player's unlocked milestones (empty when milestones are disabled)
+	 * @param setting  the world's xpMultiplier setting
 	 */
-	public static double multiplier(int level, boolean night, double setting, boolean milestonesEnabled) {
+	public static double multiplier(Set<Milestone> unlocked, boolean night, double setting) {
 		double multiplier = setting;
-		if (milestonesEnabled && Milestone.FAST_LEARNER.unlockedAt(level)) {
+		if (unlocked.contains(Milestone.FAST_LEARNER)) {
 			multiplier *= 1.1;
 		}
-		if (milestonesEnabled && night && Milestone.NIGHT_OWL.unlockedAt(level)) {
+		if (unlocked.contains(Milestone.VETERAN)) {
+			multiplier *= 1.1;
+		}
+		if (night && unlocked.contains(Milestone.NIGHT_OWL)) {
 			multiplier *= 2.0;
 		}
 		return multiplier;

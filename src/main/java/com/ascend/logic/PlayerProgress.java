@@ -83,6 +83,24 @@ public final class PlayerProgress {
 		points = earned - spent;
 	}
 
+	/** Spends points on something other than stats (skills). */
+	public boolean spendPoints(int amount) {
+		if (amount <= 0 || points < amount) {
+			return false;
+		}
+		points -= amount;
+		return true;
+	}
+
+	/** Spends up to {@code amount} points in a stat. @return how many were spent */
+	public int spend(Stat stat, int amount) {
+		int spent = 0;
+		while (spent < amount && spend(stat)) {
+			spent++;
+		}
+		return spent;
+	}
+
 	/** Total points currently spent in stats. */
 	public int spentPoints() {
 		return Arrays.stream(stats).sum();

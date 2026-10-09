@@ -1,10 +1,15 @@
 package com.ascend;
 
+import com.ascend.entity.AscendEntities;
 import com.ascend.item.AscendItems;
+import com.ascend.item.ShadowTools;
 import com.ascend.logic.Milestone;
 import com.ascend.network.DoubleJumpPayload;
 import com.ascend.network.LevelTagPayload;
+import com.ascend.network.QuestPayload;
 import com.ascend.network.SettingsPayload;
+import com.ascend.network.SkillActionPayload;
+import com.ascend.network.SkillsPayload;
 import com.ascend.network.SpendPayload;
 import com.ascend.network.SyncPayload;
 import net.fabricmc.api.ModInitializer;
@@ -30,19 +35,24 @@ public class Ascend implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		AscendData.init();
+		AscendEntities.init();
 		AscendItems.init();
 		PayloadTypeRegistry.playS2C().register(SyncPayload.ID, SyncPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(LevelTagPayload.ID, LevelTagPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SettingsPayload.ID, SettingsPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(SpendPayload.ID, SpendPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(DoubleJumpPayload.ID, DoubleJumpPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(SkillActionPayload.ID, SkillActionPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(SkillsPayload.ID, SkillsPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(QuestPayload.ID, QuestPayload.CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(SpendPayload.ID,
-				(payload, context) -> Progression.spend(context.player(), payload.stat()));
+				(payload, context) -> Progression.spend(context.player(), payload.stat(), payload.amount()));
+		ServerPlayNetworking.registerGlobalReceiver(SkillActionPayload.ID,
+				(payload, context) -> SkillSystem.handle(context.player(), payload));
 		ServerPlayNetworking.registerGlobalReceiver(DoubleJumpPayload.ID, (payload, context) -> {
 			ServerPlayerEntity player = context.player();
-			if (AscendSettings.get(player.getServer()).milestones
-					&& Milestone.SKY_WALKER.unlockedAt(Progression.get(player).level())) {
+			if (Progression.milestones(player).contains(Milestone.SKY_WALKER)) {
 				player.fallDistance = 0.0F;
 			}
 		});
@@ -59,6 +69,8 @@ public class Ascend implements ModInitializer {
 		});
 
 		XpSources.register();
+		MobLevelSystem.register();
+		ShadowTools.register();
 		MilestoneEffects.register();
 		AscendLoot.register();
 		AscendCommands.register();

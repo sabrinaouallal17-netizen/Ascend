@@ -129,4 +129,13 @@ class PlayerProgressTest {
 		assertEquals(0, progress.spentPoints());
 		assertEquals(20, progress.points());
 	}
+
+	@Test
+	void spendManyAtOnce() {
+		PlayerProgress progress = new PlayerProgress();
+		progress.setLevel(11);
+		assertEquals(10, progress.spend(Stat.AGILITY, 25));
+		assertEquals(10, progress.stat(Stat.AGILITY));
+		assertEquals(0, progress.points());
+	}
 }

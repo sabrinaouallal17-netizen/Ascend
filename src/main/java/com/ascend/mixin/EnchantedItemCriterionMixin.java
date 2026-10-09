@@ -15,6 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class EnchantedItemCriterionMixin {
 	@Inject(method = "trigger", at = @At("HEAD"))
 	private void ascend$onEnchant(ServerPlayerEntity player, ItemStack stack, int levels, CallbackInfo ci) {
-		XpSources.onActivity(player, levels * XpRewards.ENCHANT_PER_LEVEL);
+		XpSources.onActivity(player, levels * XpRewards.ENCHANT_PER_LEVEL, null);
 	}
 }

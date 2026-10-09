@@ -58,7 +58,11 @@ public final class AscendCommands {
 							.then(CommandManager.literal("levelTags")
 									.then(CommandManager.argument("value", BoolArgumentType.bool())
 											.executes(context -> changeSetting(context, "levelTags", settings ->
-													settings.levelTags = BoolArgumentType.getBool(context, "value"))))))
+													settings.levelTags = BoolArgumentType.getBool(context, "value")))))
+							.then(CommandManager.literal("mobLevels")
+									.then(CommandManager.argument("value", BoolArgumentType.bool())
+											.executes(context -> changeSetting(context, "mobLevels", settings ->
+													settings.mobLevels = BoolArgumentType.getBool(context, "value"))))))
 					.then(CommandManager.literal("reset")
 							.executes(context -> {
 								ServerPlayerEntity player = context.getSource().getPlayerOrThrow();
@@ -76,6 +80,7 @@ public final class AscendCommands {
 				.append(line("xpMultiplier", settings.xpMultiplier, "XP multiplier (0.1 to 10)"))
 				.append(line("milestones", settings.milestones, "milestone rewards"))
 				.append(line("levelTags", settings.levelTags, "level above players' heads"))
+				.append(line("mobLevels", settings.mobLevels, "random levels for new hostile mobs"))
 				.append(Text.literal("\nChange one with /ascend settings <name> <value>").formatted(Formatting.GRAY)), false);
 		return 1;
 	}

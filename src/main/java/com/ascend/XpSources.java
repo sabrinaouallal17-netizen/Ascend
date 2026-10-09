@@ -1,6 +1,10 @@
 package com.ascend;
 
 import com.ascend.item.AscendItems;
+import com.ascend.entity.ShadowAssassinEntity;
+import com.ascend.logic.Counter;
+import com.ascend.logic.MobLevels;
+import com.ascend.logic.XpMultiplier;
 import com.ascend.logic.XpRewards;
 import java.util.Set;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -41,6 +45,12 @@ public final class XpSources {
 					: (hasSilkTouch(world, serverPlayer) ? 0 : oreXp(state));
 			if (xp > 0) {
 				Progression.addSourceXp(serverPlayer, xp);
+				if (!(state.getBlock() instanceof CropBlock)) {
+					Progression.count(serverPlayer, Counter.ORES, 1);
+					if (state.isIn(BlockTags.DIAMOND_ORES)) {
+						Progression.count(serverPlayer, Counter.DIAMONDS, 1);
+					}
+				}
 			}
 		});
 
@@ -48,7 +58,16 @@ public final class XpSources {
 			if (!(entity instanceof PlayerEntity)
 					&& damageSource.getAttacker() instanceof ServerPlayerEntity player
 					&& earnsXp(player)) {
-				Progression.addSourceXp(player, XpRewards.forMob(entity.getMaxHealth()));
+				int level = MobLevelSystem.levelOf(entity);
+				int base = XpRewards.forMob(entity.getMaxHealth() / (float) MobLevels.healthMultiplier(level));
+				Progression.addSourceXp(player, XpMultiplier.apply(base, MobLevels.xpMultiplier(level)));
+				Progression.count(player, Counter.MOBS_KILLED, 1);
+				if (MobLevels.isElite(level)) {
+					Progression.count(player, Counter.ELITE_KILLS, 1);
+				}
+				if (entity instanceof ShadowAssassinEntity) {
+					Progression.count(player, Counter.SHADOW_KILLS, 1);
+				}
 			}
 			if (entity instanceof WitherEntity || entity instanceof EnderDragonEntity
 					|| entity instanceof WardenEntity || entity instanceof ElderGuardianEntity) {
@@ -69,9 +88,12 @@ public final class XpSources {
 	}
 
 	/** Called by the criterion mixins (fishing, trading, enchanting, breeding). */
-	public static void onActivity(ServerPlayerEntity player, int baseXp) {
+	public static void onActivity(ServerPlayerEntity player, int baseXp, Counter counter) {
 		if (earnsXp(player)) {
 			Progression.addSourceXp(player, baseXp);
+			if (counter != null) {
+				Progression.count(player, counter, 1);
+			}
 		}
 	}
 
@@ -83,6 +105,7 @@ public final class XpSources {
 				player.sendMessage(Text.literal("New biome discovered: ").formatted(Formatting.AQUA)
 						.append(Text.literal(prettyName(key.getValue().getPath())).formatted(Formatting.WHITE)));
 				Progression.addSourceXp(player, XpRewards.NEW_BIOME);
+				Progression.countAtLeast(player, Counter.BIOMES, discovered.size());
 			}
 		});
 	}

@@ -17,6 +17,6 @@ public abstract class BredAnimalsCriterionMixin {
 	@Inject(method = "trigger", at = @At("HEAD"))
 	private void ascend$onBreed(ServerPlayerEntity player, AnimalEntity parent, AnimalEntity partner,
 			PassiveEntity child, CallbackInfo ci) {
-		XpSources.onActivity(player, XpRewards.BREEDING);
+		XpSources.onActivity(player, XpRewards.BREEDING, null);
 	}
 }

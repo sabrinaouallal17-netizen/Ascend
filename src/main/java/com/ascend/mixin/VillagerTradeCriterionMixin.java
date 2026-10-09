@@ -1,6 +1,7 @@
 package com.ascend.mixin;
 
 import com.ascend.XpSources;
+import com.ascend.logic.Counter;
 import com.ascend.logic.XpRewards;
 import net.minecraft.advancement.criterion.VillagerTradeCriterion;
 import net.minecraft.entity.passive.MerchantEntity;
@@ -16,6 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class VillagerTradeCriterionMixin {
 	@Inject(method = "trigger", at = @At("HEAD"))
 	private void ascend$onTrade(ServerPlayerEntity player, MerchantEntity merchant, ItemStack stack, CallbackInfo ci) {
-		XpSources.onActivity(player, XpRewards.TRADE);
+		XpSources.onActivity(player, XpRewards.TRADE, Counter.TRADES);
 	}
 }

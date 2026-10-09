@@ -1,0 +1,24 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"pattern": [
+		"OPO",
+		"PBP",
+		"OPO"
+	],
+	"key": {
+		"O": {
+			"item": "minecraft:obsidian"
+		},
+		"P": {
+			"item": "minecraft:ender_pearl"
+		},
+		"B": {
+			"item": "ascend:large_exp_bottle"
+		}
+	},
+	"result": {
+		"id": "ascend:shadow_sigil",
+		"count": 1
+	}
+}
