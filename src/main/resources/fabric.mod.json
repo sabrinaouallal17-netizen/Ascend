@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"id": "ascend",
+	"version": "${version}",
+	"name": "Ascend",
+	"description": "An RPG leveling mod: earn XP by mining, fighting and farming, level up to 200 and spend skill points on your stats.",
+	"authors": [
+		"Miiso",
+		"Syntra"
+	],
+	"contact": {
+		"sources": "https://github.com/sabrinaouallal17-netizen/Ascend"
+	},
+	"license": "All-Rights-Reserved",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.ascend.Ascend"
+		],
+		"client": [
+			"com.ascend.client.AscendClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.16.0",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
