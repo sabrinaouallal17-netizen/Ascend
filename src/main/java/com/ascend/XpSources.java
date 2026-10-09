@@ -1,6 +1,7 @@
 package com.ascend;
 
 import com.ascend.item.AscendItems;
+import com.ascend.entity.FrostWardenEntity;
 import com.ascend.entity.ShadowAssassinEntity;
 import com.ascend.logic.Counter;
 import com.ascend.logic.MobLevels;
@@ -68,6 +69,9 @@ public final class XpSources {
 				}
 				if (entity instanceof ShadowAssassinEntity) {
 					Progression.count(player, Counter.SHADOW_KILLS, 1);
+				}
+				if (entity instanceof FrostWardenEntity) {
+					Progression.count(player, Counter.FROST_KILLS, 1);
 				}
 			}
 			if (entity instanceof WitherEntity || entity instanceof EnderDragonEntity

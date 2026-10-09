@@ -1,5 +1,6 @@
 package com.ascend;
 
+import com.ascend.entity.FrostWardenEntity;
 import com.ascend.entity.ShadowAssassinEntity;
 import com.ascend.logic.MobLevels;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
@@ -46,7 +47,8 @@ public final class MobLevelSystem {
 
 	private static boolean isBoss(Entity entity) {
 		return entity instanceof WitherEntity || entity instanceof EnderDragonEntity || entity instanceof WardenEntity
-				|| entity instanceof ElderGuardianEntity || entity instanceof ShadowAssassinEntity;
+				|| entity instanceof ElderGuardianEntity || entity instanceof ShadowAssassinEntity
+				|| entity instanceof FrostWardenEntity;
 	}
 
 	private static void assignLevel(MobEntity mob, ServerWorld world) {

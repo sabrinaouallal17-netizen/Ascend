@@ -88,5 +88,71 @@
 			"ascend:item/shadow_dagger_hit"
 		],
 		"subtitle": "subtitles.ascend.item.shadow_dagger.hit"
+	},
+	"frost_warden.ambient": {
+		"sounds": [
+			"ascend:frost_warden/ambient"
+		],
+		"subtitle": "subtitles.ascend.frost_warden.ambient"
+	},
+	"frost_warden.hurt": {
+		"sounds": [
+			"ascend:frost_warden/hurt"
+		],
+		"subtitle": "subtitles.ascend.frost_warden.hurt"
+	},
+	"frost_warden.death": {
+		"sounds": [
+			"ascend:frost_warden/death"
+		],
+		"subtitle": "subtitles.ascend.frost_warden.death"
+	},
+	"frost_warden.spikes": {
+		"sounds": [
+			"ascend:frost_warden/spikes"
+		],
+		"subtitle": "subtitles.ascend.frost_warden.spikes"
+	},
+	"frost_warden.nova": {
+		"sounds": [
+			"ascend:frost_warden/nova"
+		],
+		"subtitle": "subtitles.ascend.frost_warden.nova"
+	},
+	"frost_warden.roar": {
+		"sounds": [
+			"ascend:frost_warden/roar"
+		],
+		"subtitle": "subtitles.ascend.frost_warden.roar"
+	},
+	"frost_warden.slam": {
+		"sounds": [
+			"ascend:frost_warden/slam"
+		],
+		"subtitle": "subtitles.ascend.frost_warden.slam"
+	},
+	"frost_warden.spawn": {
+		"sounds": [
+			"ascend:frost_warden/spawn"
+		],
+		"subtitle": "subtitles.ascend.frost_warden.spawn"
+	},
+	"item.frost_sword.hit": {
+		"sounds": [
+			"ascend:item/frost_sword_hit"
+		],
+		"subtitle": "subtitles.ascend.item.frost_sword.hit"
+	},
+	"item.frost_pickaxe.levelup": {
+		"sounds": [
+			"ascend:item/frost_pickaxe_levelup"
+		],
+		"subtitle": "subtitles.ascend.item.frost_pickaxe.levelup"
+	},
+	"item.frost_pickaxe.shatter": {
+		"sounds": [
+			"ascend:item/frost_pickaxe_shatter"
+		],
+		"subtitle": "subtitles.ascend.item.frost_pickaxe.shatter"
 	}
 }

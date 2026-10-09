@@ -1,0 +1,26 @@
+{
+	"parent": "minecraft:item/handheld",
+	"textures": {
+		"layer0": "ascend:item/frost_pickaxe"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"ascend:pickaxe_level": 0.3
+			},
+			"model": "ascend:item/frost_pickaxe_1"
+		},
+		{
+			"predicate": {
+				"ascend:pickaxe_level": 0.6
+			},
+			"model": "ascend:item/frost_pickaxe_2"
+		},
+		{
+			"predicate": {
+				"ascend:pickaxe_level": 0.9
+			},
+			"model": "ascend:item/frost_pickaxe_3"
+		}
+	]
+}

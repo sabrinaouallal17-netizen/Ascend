@@ -1,6 +1,9 @@
 package com.ascend.client;
 
+import com.ascend.Ascend;
 import com.ascend.AscendParticles;
+import com.ascend.item.AscendItems;
+import com.ascend.item.FrostPickaxeItem;
 import com.ascend.entity.AscendEntities;
 import com.ascend.logic.Achievement;
 import com.ascend.logic.Counter;
@@ -34,6 +37,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.math.Vec3d;
@@ -81,6 +85,11 @@ public class AscendClient implements ClientModInitializer {
 		EntityRendererRegistry.register(AscendEntities.SHADOW_ASSASSIN, ShadowAssassinRenderer::new);
 		ParticleFactoryRegistry.getInstance().register(AscendParticles.SHADOW_WISP, ShadowParticle.WispFactory::new);
 		ParticleFactoryRegistry.getInstance().register(AscendParticles.SHADOW_SPARK, ShadowParticle.SparkFactory::new);
+		EntityRendererRegistry.register(AscendEntities.FROST_WARDEN, FrostWardenRenderer::new);
+		ParticleFactoryRegistry.getInstance().register(AscendParticles.FROST_SPARK, ShadowParticle.SparkFactory::new);
+		// The Frost Pickaxe changes look at each level (models/item/frost_pickaxe.json overrides).
+		ModelPredicateProviderRegistry.register(AscendItems.FROST_PICKAXE, Ascend.id("pickaxe_level"),
+				(stack, world, entity, seed) -> FrostPickaxeItem.level(stack) / 3.0F);
 
 		ClientPlayNetworking.registerGlobalReceiver(SyncPayload.ID, (payload, context) ->
 				progress = new PlayerProgress(payload.level(), payload.xp(), payload.points(),

@@ -6,10 +6,10 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 
-/** Base for the Ascend menus: a panel with Stats / Skills / Milestones / Achievements tabs. */
+/** Base for the Ascend menus: a panel with Stats / Skills / Milestones / Trophies / Codex tabs. */
 public abstract class AscendScreen extends Screen {
-	protected static final int PANEL_WIDTH = 280;
-	protected static final int PANEL_HEIGHT = 240;
+	protected static final int PANEL_WIDTH = 330;
+	protected static final int PANEL_HEIGHT = 250;
 	protected static final int CONTENT_TOP = 28;
 	protected static final int GOLD = 0xFFFFAA00;
 	protected static final int WHITE = 0xFFFFFFFF;
@@ -22,7 +22,8 @@ public abstract class AscendScreen extends Screen {
 		STATS("Stats"),
 		SKILLS("Skills"),
 		MILESTONES("Milestones"),
-		ACHIEVEMENTS("Achievements");
+		ACHIEVEMENTS("Trophies"),
+		CODEX("Codex");
 
 		private final String label;
 
@@ -66,6 +67,7 @@ public abstract class AscendScreen extends Screen {
 			case SKILLS -> new SkillsScreen();
 			case MILESTONES -> new MilestonesScreen();
 			case ACHIEVEMENTS -> new AchievementsScreen();
+			case CODEX -> new CodexScreen();
 		});
 	}
 
@@ -85,6 +87,17 @@ public abstract class AscendScreen extends Screen {
 
 	protected void text(DrawContext context, String text, int x, int y, int color) {
 		context.drawTextWithShadow(textRenderer, Text.literal(text), x, y, color);
+	}
+
+	protected void centeredText(DrawContext context, String text, int centerX, int y, int color) {
+		context.drawTextWithShadow(textRenderer, Text.literal(text), centerX - textRenderer.getWidth(text) / 2, y, color);
+	}
+
+	protected static void drawBorder(DrawContext context, int x, int y, int width, int height, int color) {
+		context.fill(x, y, x + width, y + 1, color);
+		context.fill(x, y + height - 1, x + width, y + height, color);
+		context.fill(x, y, x + 1, y + height, color);
+		context.fill(x + width - 1, y, x + width, y + height, color);
 	}
 
 	protected void rightText(DrawContext context, String text, int rightX, int y, int color) {

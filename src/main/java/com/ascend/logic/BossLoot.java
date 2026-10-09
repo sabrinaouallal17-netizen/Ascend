@@ -19,6 +19,16 @@ public final class BossLoot {
 			new Drop("shadow_boots", "Shadow Boots", 0.20),
 			new Drop("legendary_exp_bottle", "Legendary EXP Bottle", 1.0));
 
+	public static final List<Drop> FROST_WARDEN = List.of(
+			new Drop("frost_sword", "Frost Sword", 0.25),
+			new Drop("frost_pickaxe", "Frost Pickaxe", 0.15),
+			new Drop("frost_axe", "Frost Axe", 0.15),
+			new Drop("frost_helmet", "Frost Helmet", 0.20),
+			new Drop("frost_chestplate", "Frost Chestplate", 0.20),
+			new Drop("frost_leggings", "Frost Leggings", 0.20),
+			new Drop("frost_boots", "Frost Boots", 0.20),
+			new Drop("legendary_exp_bottle", "Legendary EXP Bottle", 1.0));
+
 	private BossLoot() {
 	}
 

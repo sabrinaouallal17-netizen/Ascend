@@ -1,0 +1,24 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"pattern": [
+		"BDB",
+		"DSD",
+		"BDB"
+	],
+	"key": {
+		"B": {
+			"item": "minecraft:blue_ice"
+		},
+		"D": {
+			"item": "minecraft:diamond"
+		},
+		"S": {
+			"item": "ascend:shadow_ingot"
+		}
+	},
+	"result": {
+		"id": "ascend:frost_sigil",
+		"count": 1
+	}
+}

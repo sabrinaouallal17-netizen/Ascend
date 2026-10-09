@@ -8,12 +8,12 @@ import net.minecraft.item.Items;
 
 /** Achievements tab: a card per achievement with an icon, a progress bar and its XP reward. */
 public class AchievementsScreen extends AscendScreen {
-	private static final int CARD_WIDTH = 128;
-	private static final int CARD_HEIGHT = 25;
+	private static final int CARD_WIDTH = (PANEL_WIDTH - 24) / 2;
+	private static final int CARD_HEIGHT = 23;
 	private static final int GAP = 2;
 
 	public AchievementsScreen() {
-		super("Ascend - Achievements");
+		super("Ascend - Trophies");
 	}
 
 	@Override
@@ -37,6 +37,7 @@ public class AchievementsScreen extends AscendScreen {
 			case MERCHANT -> Items.EMERALD;
 			case ELITE_HUNTER -> Items.SKELETON_SKULL;
 			case SHADOW_SLAYER -> AscendItems.SHADOW_DAGGER;
+			case FROST_SLAYER -> AscendItems.FROST_SWORD;
 			case SKILLED -> Items.ENCHANTED_BOOK;
 			case HALFWAY -> Items.EXPERIENCE_BOTTLE;
 			case ASCENDANT -> Items.NETHER_STAR;
@@ -51,7 +52,7 @@ public class AchievementsScreen extends AscendScreen {
 		int unlocked = AscendClient.quests.unlocked().size();
 		int top = top() + CONTENT_TOP;
 
-		text(context, "Achievements", left() + 12, top + 4, GOLD);
+		text(context, "Trophies", left() + 12, top + 4, GOLD);
 		int barX = left() + 90;
 		int barWidth = PANEL_WIDTH - 100 - 40;
 		context.fill(barX, top + 6, barX + barWidth, top + 10, 0xFF222222);
@@ -74,10 +75,10 @@ public class AchievementsScreen extends AscendScreen {
 		int accent = done ? GREEN : 0xFF3A3A4A;
 		context.fill(x, y, x + CARD_WIDTH, y + CARD_HEIGHT, done ? 0xFF132313 : 0xFF16161F);
 		context.fill(x, y, x + 2, y + CARD_HEIGHT, accent);
-		context.drawItem(icon(achievement), x + 5, y + 4);
+		context.drawItem(icon(achievement), x + 5, y + 3);
 		if (!done) {
 			// Dim the icon of locked achievements.
-			context.fill(x + 5, y + 4, x + 21, y + 20, 0xA016161F);
+			context.fill(x + 5, y + 3, x + 21, y + 19, 0xA016161F);
 		}
 		text(context, achievement.title(), x + 24, y + 3, done ? GREEN : WHITE);
 		if (achievement.xpReward() > 0) {
@@ -85,11 +86,11 @@ public class AchievementsScreen extends AscendScreen {
 		}
 		int barX = x + 24;
 		int barWidth = CARD_WIDTH - 28;
-		context.fill(barX, y + 14, barX + barWidth, y + 17, 0xFF222222);
-		context.fill(barX, y + 14, barX + barWidth * count / achievement.target(), y + 17, done ? GREEN : AQUA);
+		context.fill(barX, y + 13, barX + barWidth, y + 16, 0xFF222222);
+		context.fill(barX, y + 13, barX + barWidth * count / achievement.target(), y + 16, done ? GREEN : AQUA);
 		String detail = achievement.counter().task() + " " + count + "/" + achievement.target();
 		context.getMatrices().push();
-		context.getMatrices().translate(barX, y + 18.5F, 0.0F);
+		context.getMatrices().translate(barX, y + 17.5F, 0.0F);
 		context.getMatrices().scale(0.6F, 0.6F, 1.0F);
 		context.drawTextWithShadow(textRenderer, detail, 0, 0, done ? GRAY : DARK_GRAY);
 		context.getMatrices().pop();

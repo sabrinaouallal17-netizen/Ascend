@@ -37,6 +37,12 @@ Learn skills with skill points in the Skills tab, then put them in a slot. Use t
 | Heal Pulse | 30 | 3 | 30s | Heal 6 HP to you and nearby players |
 | Ground Slam | 45 | 3 | 15s | Damage and knock back nearby mobs |
 | Berserk | 75 | 5 | 60s | Strength II and Speed II for 10s |
+| Lifesteal | 40 | 3 | 45s | For 10s, your hits heal you for 30% of the damage. **Quest:** kill 1,000 mobs |
+| Shadow Step | 60 | 4 | 10s | Teleport behind the mob you are looking at (12 blocks). **Quest:** slay the Shadow Assassin |
+| Frost Nova | 90 | 4 | 25s | Freeze, slow (Slowness III, 5s) and damage (6) every mob within 6 blocks. **Quest:** slay the Frost Warden |
+
+Quest skills show their quest progress on their card; you can learn them once the quest is done. The Skills tab has
+pages (use the arrows).
 
 ## Mob levels
 
@@ -45,7 +51,7 @@ Nether and +30 in the End, up to 100. Higher levels mean more health and damage,
 
 ## Achievements
 
-14 achievements (First Blood, Shiny!, Explorer, Shadow Slayer, Collector...), each with an XP reward.
+15 achievements, shown in the **Trophies** tab (First Blood, Shiny!, Explorer, Shadow Slayer, Frost Slayer, Collector...), each with an XP reward.
 
 ## Milestones
 
@@ -99,6 +105,52 @@ Shadow Ingot | Sigil Piece  | Shadow Ingot
 
 All Shadow gear is **unbreakable** and has its own sounds and particles (dagger hits, 6x6 shattering, tree cleaving,
 armor equip).
+
+## Boss: Frost Warden
+
+450 HP, armor 14, immune to knockback and freezing, 1.45x the size of a player. Custom sounds, frost particles and
+animations, and a blue boss bar.
+
+- **Arrival**: an icy roar and a burst of snow.
+- **Ice Spikes**: raises its sword (1s), then spikes erupt under everyone within 12 blocks: 8 damage, launched up, slowed.
+- **Frost Nova**: crouches, then freezes and pushes back everyone within 6 blocks.
+- **Glacial Leap**: jumps on you and shatters the ground (10 damage around it).
+- **Blizzard** (below half health): the boss bar turns white, it gets Strength and a blizzard slows and freezes
+  everyone within 14 blocks.
+
+Summon it with a **Frost Sigil**, its spawn egg, or `/summon ascend:frost_warden`.
+
+```
+Blue Ice | Diamond      | Blue Ice
+Diamond  | Shadow Ingot | Diamond
+Blue Ice | Diamond      | Blue Ice
+```
+
+| Drop | Chance | Effect |
+|---|---|---|
+| Frost Sword | 25% | 14 damage. Hits slow (Slowness II) and freeze the target |
+| Frost Pickaxe | 15% | Mines an 8x8 area and **evolves** (see below; sneak for one block) |
+| Frost Axe | 15% | Fells the whole tree (sneak for one log) |
+| Frost Helmet / Chestplate / Leggings / Boots | 20% each | Tougher than Shadow armor. Full set: Resistance I, immune to freezing, snow aura |
+| Legendary EXP Bottle | 100% | +2,000 XP |
+
+All Frost gear is **unbreakable**.
+
+### Frost Pickaxe evolution
+
+The Frost Pickaxe counts every block it mines (shown in its tooltip). It levels up and changes look:
+
+| Level | Blocks mined | Area |
+|---|---|---|
+| 0 | 0 | 8x8 |
+| 1 | 5,000 | 10x10 |
+| 2 | 25,000 | 12x12 |
+| 3 | 100,000 | 16x16 |
+
+## Boss Codex
+
+The **Codex** tab (K menu) has a page per boss: health, abilities, how to summon it, its drops with their rates,
+and how many times you slew it.
 
 ## Items
 

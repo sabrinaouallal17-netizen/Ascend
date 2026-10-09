@@ -15,15 +15,18 @@ import net.minecraft.item.Items;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 
-/** Skills tab: the 3 equipped slots on top, then one card per skill (learn it, or pick its key). */
+/** Skills tab: the 3 equipped slots on top, then pages of skill cards (learn it, or pick its key). */
 public class SkillsScreen extends AscendScreen {
-	private static final int CARD_WIDTH = 128;
+	private static final int CARD_WIDTH = (PANEL_WIDTH - 24) / 2;
+	private static final int PER_PAGE = 4;
+	private static final int PAGES = (Skill.values().length + PER_PAGE - 1) / PER_PAGE;
 	private static final int CARD_HEIGHT = 84;
 	private static final int CARDS_TOP = 50;
 	private static final int GAP = 4;
 
 	private final List<ButtonWidget> learnButtons = new ArrayList<>();
 	private final List<ButtonWidget[]> slotButtons = new ArrayList<>();
+	private static int page;
 
 	public SkillsScreen() {
 		super("Ascend - Skills");
@@ -40,6 +43,9 @@ public class SkillsScreen extends AscendScreen {
 			case HEAL_PULSE -> Items.GOLDEN_APPLE;
 			case GROUND_SLAM -> Items.MACE;
 			case BERSERK -> Items.BLAZE_POWDER;
+			case LIFESTEAL -> Items.REDSTONE;
+			case SHADOW_STEP -> Items.ENDER_PEARL;
+			case FROST_NOVA -> Items.BLUE_ICE;
 		});
 	}
 
@@ -47,14 +53,24 @@ public class SkillsScreen extends AscendScreen {
 		return left() + 10 + (skill.ordinal() % 2) * (CARD_WIDTH + GAP);
 	}
 
+	private static boolean onPage(Skill skill) {
+		return skill.ordinal() / PER_PAGE == page;
+	}
+
 	private int cardY(Skill skill) {
-		return top() + CARDS_TOP + (skill.ordinal() / 2) * (CARD_HEIGHT + GAP);
+		return top() + CARDS_TOP + ((skill.ordinal() % PER_PAGE) / 2) * (CARD_HEIGHT + GAP);
 	}
 
 	@Override
 	protected void initContent() {
 		learnButtons.clear();
 		slotButtons.clear();
+		int pagerX = left() + 100;
+		int pagerY = top() + CONTENT_TOP + 1;
+		addDrawableChild(ButtonWidget.builder(Text.literal("<"), b -> page = Math.floorMod(page - 1, PAGES))
+				.dimensions(pagerX, pagerY, 14, 18).build());
+		addDrawableChild(ButtonWidget.builder(Text.literal(">"), b -> page = Math.floorMod(page + 1, PAGES))
+				.dimensions(pagerX + 34, pagerY, 14, 18).build());
 		for (Skill skill : Skill.values()) {
 			int x = cardX(skill);
 			int buttonsY = cardY(skill) + CARD_HEIGHT - 22;
@@ -66,7 +82,7 @@ public class SkillsScreen extends AscendScreen {
 				String key = AscendClient.SKILL_KEYS[slot].getBoundKeyLocalizedText().getString();
 				slots[slot] = addDrawableChild(ButtonWidget.builder(Text.literal(key),
 						button -> send(SkillActionPayload.BIND, skill, slotIndex))
-						.dimensions(x + 6 + slot * 40, buttonsY, 38, 18).build());
+						.dimensions(x + 6 + slot * ((CARD_WIDTH - 12) / 3), buttonsY, (CARD_WIDTH - 12) / 3 - 2, 18).build());
 			}
 			slotButtons.add(slots);
 		}
@@ -83,11 +99,13 @@ public class SkillsScreen extends AscendScreen {
 		for (Skill skill : Skill.values()) {
 			boolean known = book.knows(skill);
 			ButtonWidget learn = learnButtons.get(skill.ordinal());
-			learn.visible = !known;
-			learn.active = progress.level() >= skill.requiredLevel() && progress.points() >= skill.cost();
+			boolean shown = onPage(skill);
+			learn.visible = shown && !known;
+			learn.active = progress.level() >= skill.requiredLevel() && progress.points() >= skill.cost()
+					&& skill.questDone(AscendClient.quests);
 			ButtonWidget[] slots = slotButtons.get(skill.ordinal());
 			for (int slot = 0; slot < slots.length; slot++) {
-				slots[slot].visible = known;
+				slots[slot].visible = shown && known;
 				slots[slot].active = book.inSlot(slot) != skill;
 			}
 		}
@@ -105,7 +123,8 @@ public class SkillsScreen extends AscendScreen {
 		PlayerProgress progress = AscendClient.progress;
 		int top = top() + CONTENT_TOP;
 
-		text(context, "Skill points: " + progress.points(), left() + 12, top + 6, progress.points() > 0 ? GREEN : GRAY);
+		text(context, "Points: " + progress.points(), left() + 12, top + 6, progress.points() > 0 ? GREEN : GRAY);
+		centeredText(context, (page + 1) + "/" + PAGES, left() + 124, top + 6, WHITE);
 		// Equipped slots bar.
 		for (int slot = 0; slot < SkillBook.SLOTS; slot++) {
 			int x = left() + PANEL_WIDTH - 10 - (SkillBook.SLOTS - slot) * 56;
@@ -126,7 +145,9 @@ public class SkillsScreen extends AscendScreen {
 		}
 
 		for (Skill skill : Skill.values()) {
-			drawCard(context, skill, book.knows(skill), progress);
+			if (onPage(skill)) {
+				drawCard(context, skill, book.knows(skill), progress);
+			}
 		}
 		int hintY = top() + CARDS_TOP + 2 * (CARD_HEIGHT + GAP) + 1;
 		context.drawItem(new ItemStack(AscendItems.SHADOW_DAGGER), left() + 10, hintY - 4);
@@ -136,7 +157,8 @@ public class SkillsScreen extends AscendScreen {
 	private void drawCard(DrawContext context, Skill skill, boolean known, PlayerProgress progress) {
 		int x = cardX(skill);
 		int y = cardY(skill);
-		boolean levelOk = progress.level() >= skill.requiredLevel();
+		boolean questOk = skill.questDone(AscendClient.quests);
+		boolean levelOk = progress.level() >= skill.requiredLevel() && questOk;
 		int accent = known ? AQUA : levelOk ? GOLD : 0xFF444455;
 		context.fill(x, y, x + CARD_WIDTH, y + CARD_HEIGHT, known ? 0xFF102028 : 0xFF16161F);
 		drawBorder(context, x, y, CARD_WIDTH, CARD_HEIGHT, accent);
@@ -147,9 +169,21 @@ public class SkillsScreen extends AscendScreen {
 		rightText(context, status, x + CARD_WIDTH - 4, y + 6, known ? GREEN : levelOk ? GOLD : DARK_GRAY);
 
 		text(context, "Cooldown " + skill.cooldownTicks() / 20 + "s", x + 5, y + 24, GRAY);
+		boolean showQuest = skill.quest() != null && !known;
+		if (showQuest) {
+			int count = Math.min(AscendClient.quests.count(skill.quest()), skill.questTarget());
+			String quest = "Quest: " + skill.quest().task() + " " + count + "/" + skill.questTarget();
+			float fit = Math.min(1.0F, (CARD_WIDTH - 10) / (float) textRenderer.getWidth(quest));
+			context.getMatrices().push();
+			context.getMatrices().translate(x + 5, y + CARD_HEIGHT - 32, 0.0F);
+			context.getMatrices().scale(fit, fit, 1.0F);
+			context.drawTextWithShadow(textRenderer, quest, 0, 0, questOk ? GREEN : 0xFFFF5555);
+			context.getMatrices().pop();
+		}
 		int lineY = y + 34;
+		int lastLineY = y + CARD_HEIGHT - (showQuest ? 41 : 32);
 		for (OrderedText line : textRenderer.wrapLines(Text.literal(skill.description()), CARD_WIDTH - 10)) {
-			if (lineY > y + CARD_HEIGHT - 32) {
+			if (lineY > lastLineY) {
 				break;
 			}
 			context.drawTextWithShadow(textRenderer, line, x + 5, lineY, DARK_GRAY);
@@ -162,12 +196,5 @@ public class SkillsScreen extends AscendScreen {
 			context.fill(x + 6, y + CARD_HEIGHT - 27, x + 6 + barWidth, y + CARD_HEIGHT - 25, 0xFF222222);
 			context.fill(x + 6, y + CARD_HEIGHT - 27, x + 6 + filled, y + CARD_HEIGHT - 25, AQUA);
 		}
-	}
-
-	private static void drawBorder(DrawContext context, int x, int y, int width, int height, int color) {
-		context.fill(x, y, x + width, y + 1, color);
-		context.fill(x, y + height - 1, x + width, y + height, color);
-		context.fill(x, y, x + 1, y + height, color);
-		context.fill(x + width - 1, y, x + width, y + height, color);
 	}
 }

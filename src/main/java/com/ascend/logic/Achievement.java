@@ -12,6 +12,7 @@ public enum Achievement {
 	MERCHANT("Merchant", Counter.TRADES, 50, 200),
 	ELITE_HUNTER("Elite Hunter", Counter.ELITE_KILLS, 1, 200),
 	SHADOW_SLAYER("Shadow Slayer", Counter.SHADOW_KILLS, 1, 1_000),
+	FROST_SLAYER("Frost Slayer", Counter.FROST_KILLS, 1, 1_500),
 	SKILLED("Skilled", Counter.SKILLS_LEARNED, 1, 100),
 	HALFWAY("Halfway There", Counter.LEVEL, 100, 1_000),
 	ASCENDANT("Ascendant", Counter.LEVEL, 200, 0),

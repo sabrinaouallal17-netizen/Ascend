@@ -15,10 +15,18 @@ public final class AscendEntities {
 					.maxTrackingRange(10)
 					.build("shadow_assassin"));
 
+	public static final EntityType<FrostWardenEntity> FROST_WARDEN = Registry.register(Registries.ENTITY_TYPE,
+			Ascend.id("frost_warden"),
+			EntityType.Builder.create(FrostWardenEntity::new, SpawnGroup.MONSTER)
+					.dimensions(0.9F, 2.8F)
+					.maxTrackingRange(10)
+					.build("frost_warden"));
+
 	private AscendEntities() {
 	}
 
 	public static void init() {
 		FabricDefaultAttributeRegistry.register(SHADOW_ASSASSIN, ShadowAssassinEntity.createAttributes());
+		FabricDefaultAttributeRegistry.register(FROST_WARDEN, FrostWardenEntity.createAttributes());
 	}
 }

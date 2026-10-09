@@ -12,6 +12,9 @@ public final class AscendParticles {
 	public static final SimpleParticleType SHADOW_SPARK = Registry.register(Registries.PARTICLE_TYPE,
 			Ascend.id("shadow_spark"), FabricParticleTypes.simple());
 
+	public static final SimpleParticleType FROST_SPARK = Registry.register(Registries.PARTICLE_TYPE,
+			Ascend.id("frost_spark"), FabricParticleTypes.simple());
+
 	private AscendParticles() {
 	}
 

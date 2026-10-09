@@ -16,6 +16,7 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Rarity;
 
 public final class AscendItems {
@@ -44,8 +45,25 @@ public final class AscendItems {
 	public static final Item SIGIL_PIECE = register("sigil_piece", new SigilPieceItem(new Item.Settings().maxCount(16).rarity(Rarity.EPIC)));
 	public static final Item SHADOW_ORE = register("shadow_ore", new BlockItem(AscendBlocks.SHADOW_ORE, new Item.Settings()));
 
-	public static final Item SHADOW_SIGIL = register("shadow_sigil",
-			new ShadowSigilItem(new Item.Settings().maxCount(16).rarity(Rarity.EPIC)));
+	public static final Item SHADOW_SIGIL = register("shadow_sigil", new BossSigilItem(
+			new Item.Settings().maxCount(16).rarity(Rarity.EPIC), () -> AscendEntities.SHADOW_ASSASSIN,
+			"Shadow Assassin", "The Shadow Assassin has come for you...", Formatting.DARK_PURPLE));
+
+	public static final Item FROST_SWORD = register("frost_sword", new FrostSwordItem(frost()
+			.attributeModifiers(SwordItem.createAttributeModifiers(FrostToolMaterial.INSTANCE, 8, -2.4F))));
+	public static final Item FROST_PICKAXE = register("frost_pickaxe", new FrostPickaxeItem(frost()
+			.attributeModifiers(MiningToolItem.createAttributeModifiers(FrostToolMaterial.INSTANCE, 1.0F, -2.8F))));
+	public static final Item FROST_AXE = register("frost_axe", new FrostAxeItem(frost()
+			.attributeModifiers(MiningToolItem.createAttributeModifiers(FrostToolMaterial.INSTANCE, 5.0F, -3.0F))));
+	public static final Item FROST_HELMET = register("frost_helmet", frostArmor(ArmorItem.Type.HELMET));
+	public static final Item FROST_CHESTPLATE = register("frost_chestplate", frostArmor(ArmorItem.Type.CHESTPLATE));
+	public static final Item FROST_LEGGINGS = register("frost_leggings", frostArmor(ArmorItem.Type.LEGGINGS));
+	public static final Item FROST_BOOTS = register("frost_boots", frostArmor(ArmorItem.Type.BOOTS));
+	public static final Item FROST_SIGIL = register("frost_sigil", new BossSigilItem(
+			new Item.Settings().maxCount(16).rarity(Rarity.EPIC), () -> AscendEntities.FROST_WARDEN,
+			"Frost Warden", "The air freezes... the Frost Warden awakens.", Formatting.AQUA));
+	public static final Item FROST_WARDEN_SPAWN_EGG = register("frost_warden_spawn_egg",
+			new SpawnEggItem(AscendEntities.FROST_WARDEN, 0x9FD8FF, 0x1E3A8A, new Item.Settings()));
 	public static final Item SHADOW_ASSASSIN_SPAWN_EGG = register("shadow_assassin_spawn_egg",
 			new SpawnEggItem(AscendEntities.SHADOW_ASSASSIN, 0x1A1026, 0x8A2BE2, new Item.Settings()));
 
@@ -56,6 +74,15 @@ public final class AscendItems {
 	private static Item.Settings shadow() {
 		return new Item.Settings().fireproof().rarity(Rarity.EPIC)
 				.component(DataComponentTypes.UNBREAKABLE, new UnbreakableComponent(true));
+	}
+
+	/** Frost gear: like Shadow gear (fireproof, epic, unbreakable). */
+	private static Item.Settings frost() {
+		return shadow();
+	}
+
+	private static Item frostArmor(ArmorItem.Type type) {
+		return new ArmorItem(ShadowArmor.FROST, type, frost().maxDamage(type.getMaxDamage(ShadowArmor.DURABILITY)));
 	}
 
 	private static Item armor(ArmorItem.Type type) {
@@ -73,6 +100,13 @@ public final class AscendItems {
 				&& entity.getEquippedStack(net.minecraft.entity.EquipmentSlot.FEET).isOf(SHADOW_BOOTS);
 	}
 
+	public static boolean wearsFullFrostSet(net.minecraft.entity.LivingEntity entity) {
+		return entity.getEquippedStack(net.minecraft.entity.EquipmentSlot.HEAD).isOf(FROST_HELMET)
+				&& entity.getEquippedStack(net.minecraft.entity.EquipmentSlot.CHEST).isOf(FROST_CHESTPLATE)
+				&& entity.getEquippedStack(net.minecraft.entity.EquipmentSlot.LEGS).isOf(FROST_LEGGINGS)
+				&& entity.getEquippedStack(net.minecraft.entity.EquipmentSlot.FEET).isOf(FROST_BOOTS);
+	}
+
 	public static void init() {
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
 			entries.add(EXP_BOTTLE);
@@ -83,6 +117,9 @@ public final class AscendItems {
 			entries.add(SHADOW_SIGIL);
 			entries.add(SHADOW_PICKAXE);
 			entries.add(SHADOW_AXE);
+			entries.add(FROST_SIGIL);
+			entries.add(FROST_PICKAXE);
+			entries.add(FROST_AXE);
 		});
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
 			entries.add(SHADOW_DAGGER);
@@ -90,8 +127,16 @@ public final class AscendItems {
 			entries.add(SHADOW_CHESTPLATE);
 			entries.add(SHADOW_LEGGINGS);
 			entries.add(SHADOW_BOOTS);
+			entries.add(FROST_SWORD);
+			entries.add(FROST_HELMET);
+			entries.add(FROST_CHESTPLATE);
+			entries.add(FROST_LEGGINGS);
+			entries.add(FROST_BOOTS);
 		});
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(entries -> entries.add(SHADOW_ASSASSIN_SPAWN_EGG));
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(entries -> {
+			entries.add(SHADOW_ASSASSIN_SPAWN_EGG);
+			entries.add(FROST_WARDEN_SPAWN_EGG);
+		});
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
 			entries.add(RAW_SHADOW);
 			entries.add(SHADOW_INGOT);

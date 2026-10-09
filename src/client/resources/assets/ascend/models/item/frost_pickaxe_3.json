@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:item/handheld",
+	"textures": {
+		"layer0": "ascend:item/frost_pickaxe_3"
+	}
+}

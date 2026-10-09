@@ -10,6 +10,7 @@ public enum Counter {
 	TRADES("Trade"),
 	ELITE_KILLS("Kill Lv 50+ mobs"),
 	SHADOW_KILLS("Slay the Shadow"),
+	FROST_KILLS("Slay the Frost Warden"),
 	LEVEL("Reach level"),
 	SKILLS_LEARNED("Learn skills"),
 	ACHIEVEMENTS("Achievements");

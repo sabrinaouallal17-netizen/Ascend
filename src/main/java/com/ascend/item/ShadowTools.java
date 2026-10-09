@@ -2,12 +2,14 @@ package com.ascend.item;
 
 import com.ascend.AscendParticles;
 import com.ascend.AscendSounds;
+import com.ascend.logic.FrostPickaxe;
 import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Set;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -15,9 +17,10 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-/** Shadow Pickaxe 6x6 mining and Shadow Axe tree felling. */
+/** Area mining (Shadow 6x6, Frost 8x8 up to 16x16) and tree felling for the boss tools. */
 public final class ShadowTools {
 	private static final int MAX_TREE_LOGS = 256;
+	private static final int SHADOW_AREA = 6;
 	/** Set while we break the extra blocks, so they don't trigger more area breaks. */
 	private static boolean breaking;
 
@@ -34,17 +37,30 @@ public final class ShadowTools {
 			breaking = true;
 			try {
 				if (held.isOf(AscendItems.SHADOW_PICKAXE)) {
-					mineArea(serverWorld, serverPlayer, pos);
+					mineSquare(serverWorld, serverPlayer, pos, SHADOW_AREA);
 					serverWorld.playSound(null, pos, AscendSounds.SHADOW_PICKAXE_SHATTER, SoundCategory.PLAYERS, 1.0F,
 							0.9F + serverWorld.random.nextFloat() * 0.2F);
 					serverWorld.spawnParticles(AscendParticles.SHADOW_WISP, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
 							25, 1.4, 1.4, 1.4, 0.02);
 					serverWorld.spawnParticles(AscendParticles.SHADOW_SPARK, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
 							12, 0.6, 0.6, 0.6, 0.15);
-				} else if (held.isOf(AscendItems.SHADOW_AXE) && state.isIn(BlockTags.LOGS)) {
-					int felled = fellTree(serverWorld, serverPlayer, pos);
+				} else if (held.isOf(AscendItems.FROST_PICKAXE)) {
+					int area = FrostPickaxe.areaFor(FrostPickaxeItem.level(held));
+					int broken = mineSquare(serverWorld, serverPlayer, pos, area);
+					FrostPickaxeItem.addBlocks(serverPlayer, held, broken + 1);
+					serverWorld.playSound(null, pos, AscendSounds.FROST_PICKAXE_SHATTER, SoundCategory.PLAYERS, 1.0F,
+							0.9F + serverWorld.random.nextFloat() * 0.2F);
+					double spread = area / 4.0;
+					serverWorld.spawnParticles(ParticleTypes.SNOWFLAKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+							20 + area * 2, spread, spread, spread, 0.03);
+					serverWorld.spawnParticles(AscendParticles.FROST_SPARK, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+							12, 0.6, 0.6, 0.6, 0.15);
+				} else if ((held.isOf(AscendItems.SHADOW_AXE) || held.isOf(AscendItems.FROST_AXE)) && state.isIn(BlockTags.LOGS)) {
+					boolean frost = held.isOf(AscendItems.FROST_AXE);
+					int felled = fellTree(serverWorld, serverPlayer, pos, frost);
 					if (felled > 0) {
-						serverWorld.playSound(null, pos, AscendSounds.SHADOW_AXE_CLEAVE, SoundCategory.PLAYERS, 1.0F, 1.0F);
+						serverWorld.playSound(null, pos, frost ? AscendSounds.FROST_SWORD_HIT : AscendSounds.SHADOW_AXE_CLEAVE,
+								SoundCategory.PLAYERS, 1.0F, 1.0F);
 					}
 				}
 			} finally {
@@ -53,12 +69,14 @@ public final class ShadowTools {
 		});
 	}
 
-	/** Breaks a 6x6 square around the mined block, facing the player. */
-	private static void mineArea(ServerWorld world, ServerPlayerEntity player, BlockPos center) {
+	/** Breaks an area x area square around the mined block, facing the player. @return how many extra blocks broke */
+	private static int mineSquare(ServerWorld world, ServerPlayerEntity player, BlockPos center, int area) {
+		int[] range = FrostPickaxe.offsets(area);
+		int broken = 0;
 		boolean lookingVertically = Math.abs(player.getPitch()) > 45.0F;
 		Direction.Axis facingAxis = player.getHorizontalFacing().getAxis();
-		for (int a = -2; a <= 3; a++) {
-			for (int b = -2; b <= 3; b++) {
+		for (int a = range[0]; a <= range[1]; a++) {
+			for (int b = range[0]; b <= range[1]; b++) {
 				BlockPos target;
 				if (lookingVertically) {
 					target = center.add(a, 0, b);
@@ -67,18 +85,19 @@ public final class ShadowTools {
 				} else {
 					target = center.add(a, b, 0);
 				}
-				if (!target.equals(center)) {
-					tryBreak(world, player, target, true);
+				if (!target.equals(center) && tryBreak(world, player, target, true)) {
+					broken++;
 				}
 				if (player.getMainHandStack().isEmpty()) {
-					return;
+					return broken;
 				}
 			}
 		}
+		return broken;
 	}
 
-	/** Breaks every log connected to the broken one, leaving a trail of shadow. @return how many logs were felled */
-	private static int fellTree(ServerWorld world, ServerPlayerEntity player, BlockPos start) {
+	/** Breaks every log connected to the broken one, leaving a trail of shadow or frost. @return how many logs were felled */
+	private static int fellTree(ServerWorld world, ServerPlayerEntity player, BlockPos start, boolean frost) {
 		int felled = 0;
 		Set<BlockPos> visited = new HashSet<>();
 		ArrayDeque<BlockPos> queue = new ArrayDeque<>();
@@ -92,7 +111,7 @@ public final class ShadowTools {
 					queue.add(next);
 					tryBreak(world, player, next, false);
 					felled++;
-					world.spawnParticles(AscendParticles.SHADOW_WISP, next.getX() + 0.5, next.getY() + 0.5, next.getZ() + 0.5,
+					world.spawnParticles(frost ? ParticleTypes.SNOWFLAKE : AscendParticles.SHADOW_WISP, next.getX() + 0.5, next.getY() + 0.5, next.getZ() + 0.5,
 							2, 0.3, 0.3, 0.3, 0.01);
 					if (player.getMainHandStack().isEmpty()) {
 						return felled;
@@ -103,14 +122,14 @@ public final class ShadowTools {
 		return felled;
 	}
 
-	private static void tryBreak(ServerWorld world, ServerPlayerEntity player, BlockPos pos, boolean needsSuitableTool) {
+	private static boolean tryBreak(ServerWorld world, ServerPlayerEntity player, BlockPos pos, boolean needsSuitableTool) {
 		BlockState state = world.getBlockState(pos);
 		if (state.isAir() || state.getHardness(world, pos) < 0.0F) {
-			return;
+			return false;
 		}
 		if (needsSuitableTool && !player.getMainHandStack().isSuitableFor(state)) {
-			return;
+			return false;
 		}
-		player.interactionManager.tryBreakBlock(pos);
+		return player.interactionManager.tryBreakBlock(pos);
 	}
 }

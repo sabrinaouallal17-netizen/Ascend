@@ -18,19 +18,19 @@ class SkillBookTest {
 	void learningCostsPointsAndFillsASlot() {
 		PlayerProgress progress = atLevel(20);
 		SkillBook book = new SkillBook();
-		assertEquals(SkillBook.LearnResult.LEARNED, book.learn(Skill.DASH, progress));
+		assertEquals(SkillBook.LearnResult.LEARNED, book.learn(Skill.DASH, progress, new QuestLog()));
 		assertEquals(19 - Skill.DASH.cost(), progress.points());
 		assertEquals(Skill.DASH, book.inSlot(0));
-		assertEquals(SkillBook.LearnResult.ALREADY_LEARNED, book.learn(Skill.DASH, progress));
+		assertEquals(SkillBook.LearnResult.ALREADY_LEARNED, book.learn(Skill.DASH, progress, new QuestLog()));
 	}
 
 	@Test
 	void levelAndPointsAreChecked() {
 		SkillBook book = new SkillBook();
-		assertEquals(SkillBook.LearnResult.LEVEL_TOO_LOW, book.learn(Skill.BERSERK, atLevel(74)));
+		assertEquals(SkillBook.LearnResult.LEVEL_TOO_LOW, book.learn(Skill.BERSERK, atLevel(74), new QuestLog()));
 		PlayerProgress broke = atLevel(80);
 		broke.spend(Stat.STRENGTH, 79);
-		assertEquals(SkillBook.LearnResult.NOT_ENOUGH_POINTS, book.learn(Skill.BERSERK, broke));
+		assertEquals(SkillBook.LearnResult.NOT_ENOUGH_POINTS, book.learn(Skill.BERSERK, broke, new QuestLog()));
 		assertFalse(book.knows(Skill.BERSERK));
 	}
 
@@ -38,7 +38,7 @@ class SkillBookTest {
 	void bindingMovesTheSkill() {
 		PlayerProgress progress = atLevel(50);
 		SkillBook book = new SkillBook();
-		book.learn(Skill.DASH, progress);
+		book.learn(Skill.DASH, progress, new QuestLog());
 		assertTrue(book.bind(Skill.DASH, 2));
 		assertNull(book.inSlot(0));
 		assertEquals(Skill.DASH, book.inSlot(2));
@@ -49,7 +49,7 @@ class SkillBookTest {
 	void cooldowns() {
 		PlayerProgress progress = atLevel(20);
 		SkillBook book = new SkillBook();
-		book.learn(Skill.DASH, progress);
+		book.learn(Skill.DASH, progress, new QuestLog());
 		assertTrue(book.tryUse(Skill.DASH, 100));
 		assertFalse(book.tryUse(Skill.DASH, 101));
 		assertEquals(Skill.DASH.cooldownTicks() - 1, book.cooldownLeft(Skill.DASH, 101));
@@ -60,5 +60,16 @@ class SkillBookTest {
 	void savedSlotsMustBeLearned() {
 		SkillBook book = new SkillBook(java.util.Set.of(), new Skill[] {Skill.DASH, null, null});
 		assertNull(book.inSlot(0));
+	}
+
+	@Test
+	void questSkillsNeedTheirQuest() {
+		PlayerProgress progress = atLevel(100);
+		SkillBook book = new SkillBook();
+		QuestLog log = new QuestLog();
+		assertEquals(SkillBook.LearnResult.QUEST_INCOMPLETE, book.learn(Skill.FROST_NOVA, progress, log));
+		log.add(Counter.FROST_KILLS, 1);
+		assertEquals(SkillBook.LearnResult.LEARNED, book.learn(Skill.FROST_NOVA, progress, log));
+		assertEquals(SkillBook.LearnResult.QUEST_INCOMPLETE, book.learn(Skill.SHADOW_STEP, progress, log));
 	}
 }

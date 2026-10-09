@@ -14,6 +14,7 @@ public final class SkillBook {
 		LEARNED,
 		ALREADY_LEARNED,
 		LEVEL_TOO_LOW,
+		QUEST_INCOMPLETE,
 		NOT_ENOUGH_POINTS
 	}
 
@@ -46,12 +47,15 @@ public final class SkillBook {
 	}
 
 	/** Learns a skill, paying its cost in skill points. The first free slot gets it. */
-	public LearnResult learn(Skill skill, PlayerProgress progress) {
+	public LearnResult learn(Skill skill, PlayerProgress progress, QuestLog log) {
 		if (learned.contains(skill)) {
 			return LearnResult.ALREADY_LEARNED;
 		}
 		if (progress.level() < skill.requiredLevel()) {
 			return LearnResult.LEVEL_TOO_LOW;
+		}
+		if (!skill.questDone(log)) {
+			return LearnResult.QUEST_INCOMPLETE;
 		}
 		if (!progress.spendPoints(skill.cost())) {
 			return LearnResult.NOT_ENOUGH_POINTS;

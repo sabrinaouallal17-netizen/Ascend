@@ -22,6 +22,18 @@ public final class AscendSounds {
 	public static final SoundEvent SHADOW_DAGGER_HIT = register("item.shadow_dagger.hit");
 	public static final SoundEvent SHADOW_PICKAXE_SHATTER = register("item.shadow_pickaxe.shatter");
 	public static final SoundEvent SHADOW_AXE_CLEAVE = register("item.shadow_axe.cleave");
+	public static final SoundEvent FROST_AMBIENT = register("frost_warden.ambient");
+	public static final SoundEvent FROST_HURT = register("frost_warden.hurt");
+	public static final SoundEvent FROST_DEATH = register("frost_warden.death");
+	public static final SoundEvent FROST_SPIKES = register("frost_warden.spikes");
+	public static final SoundEvent FROST_NOVA = register("frost_warden.nova");
+	public static final SoundEvent FROST_ROAR = register("frost_warden.roar");
+	public static final SoundEvent FROST_SLAM = register("frost_warden.slam");
+	public static final SoundEvent FROST_SPAWN = register("frost_warden.spawn");
+	public static final SoundEvent FROST_SWORD_HIT = register("item.frost_sword.hit");
+	public static final SoundEvent FROST_PICKAXE_LEVELUP = register("item.frost_pickaxe.levelup");
+	public static final SoundEvent FROST_PICKAXE_SHATTER = register("item.frost_pickaxe.shatter");
+
 	/** A registry entry, because armor materials need one for their equip sound. */
 	public static final RegistryEntry<SoundEvent> SHADOW_ARMOR_EQUIP = Registry.registerReference(Registries.SOUND_EVENT,
 			Ascend.id("item.shadow_armor.equip"), SoundEvent.of(Ascend.id("item.shadow_armor.equip")));

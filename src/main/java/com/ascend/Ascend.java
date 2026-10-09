@@ -75,6 +75,7 @@ public class Ascend implements ModInitializer {
 		XpSources.register();
 		MobLevelSystem.register();
 		ShadowTools.register();
+		SkillSystem.register();
 		MilestoneEffects.register();
 		AscendLoot.register();
 		AscendCommands.register();
