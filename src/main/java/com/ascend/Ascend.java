@@ -35,6 +35,8 @@ public class Ascend implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		AscendData.init();
+		AscendSounds.init();
+		AscendParticles.init();
 		AscendEntities.init();
 		AscendItems.init();
 		PayloadTypeRegistry.playS2C().register(SyncPayload.ID, SyncPayload.CODEC);

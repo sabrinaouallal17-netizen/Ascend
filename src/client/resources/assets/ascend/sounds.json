@@ -1,0 +1,68 @@
+{
+	"shadow_assassin.ambient": {
+		"sounds": [
+			"ascend:shadow_assassin/ambient"
+		],
+		"subtitle": "subtitles.ascend.shadow_assassin.ambient"
+	},
+	"shadow_assassin.hurt": {
+		"sounds": [
+			"ascend:shadow_assassin/hurt"
+		],
+		"subtitle": "subtitles.ascend.shadow_assassin.hurt"
+	},
+	"shadow_assassin.death": {
+		"sounds": [
+			"ascend:shadow_assassin/death"
+		],
+		"subtitle": "subtitles.ascend.shadow_assassin.death"
+	},
+	"shadow_assassin.teleport": {
+		"sounds": [
+			"ascend:shadow_assassin/teleport"
+		],
+		"subtitle": "subtitles.ascend.shadow_assassin.teleport"
+	},
+	"shadow_assassin.slash": {
+		"sounds": [
+			"ascend:shadow_assassin/slash"
+		],
+		"subtitle": "subtitles.ascend.shadow_assassin.slash"
+	},
+	"shadow_assassin.charge": {
+		"sounds": [
+			"ascend:shadow_assassin/charge"
+		],
+		"subtitle": "subtitles.ascend.shadow_assassin.charge"
+	},
+	"shadow_assassin.roar": {
+		"sounds": [
+			"ascend:shadow_assassin/roar"
+		],
+		"subtitle": "subtitles.ascend.shadow_assassin.roar"
+	},
+	"shadow_assassin.storm": {
+		"sounds": [
+			"ascend:shadow_assassin/storm"
+		],
+		"subtitle": "subtitles.ascend.shadow_assassin.storm"
+	},
+	"shadow_assassin.spawn": {
+		"sounds": [
+			"ascend:shadow_assassin/spawn"
+		],
+		"subtitle": "subtitles.ascend.shadow_assassin.spawn"
+	},
+	"shadow_assassin.clone": {
+		"sounds": [
+			"ascend:shadow_assassin/clone"
+		],
+		"subtitle": "subtitles.ascend.shadow_assassin.clone"
+	},
+	"item.shadow_dagger.dash": {
+		"sounds": [
+			"ascend:item/shadow_dash"
+		],
+		"subtitle": "subtitles.ascend.item.shadow_dagger.dash"
+	}
+}

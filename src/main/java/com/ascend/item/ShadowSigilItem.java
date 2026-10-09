@@ -8,8 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
@@ -28,7 +26,6 @@ public class ShadowSigilItem extends Item {
 			if (AscendEntities.SHADOW_ASSASSIN.spawn(world, pos, SpawnReason.MOB_SUMMONED) == null) {
 				return ActionResult.FAIL;
 			}
-			world.playSound(null, pos, SoundEvents.ENTITY_WITHER_SPAWN, SoundCategory.HOSTILE, 1.0F, 1.4F);
 			world.getPlayers(player -> player.squaredDistanceTo(pos.toCenterPos()) < 64 * 64).forEach(player ->
 					player.sendMessage(Text.literal("The Shadow Assassin has come for you...")
 							.formatted(Formatting.DARK_PURPLE, Formatting.ITALIC), false));

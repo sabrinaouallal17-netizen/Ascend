@@ -1,5 +1,7 @@
 package com.ascend.item;
 
+import com.ascend.AscendParticles;
+import com.ascend.AscendSounds;
 import java.util.List;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -7,10 +9,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -46,14 +46,28 @@ public class ShadowDaggerItem extends SwordItem {
 			HitResult hit = world.raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER,
 					RaycastContext.FluidHandling.NONE, user));
 			Vec3d target = hit.getPos().subtract(direction.multiply(0.6));
-			serverWorld.spawnParticles(ParticleTypes.LARGE_SMOKE, user.getX(), user.getY() + 1.0, user.getZ(), 20, 0.3, 0.6, 0.3, 0.02);
+			Vec3d from = user.getPos();
+			world.playSound(null, user.getBlockPos(), AscendSounds.SHADOW_DASH, SoundCategory.PLAYERS, 1.0F, 1.0F);
 			user.requestTeleport(target.x, user.getY(), target.z);
+			// Trail of shadow wisps along the dash.
+			for (int i = 0; i <= 10; i++) {
+				Vec3d point = from.lerp(user.getPos(), i / 10.0);
+				serverWorld.spawnParticles(AscendParticles.SHADOW_WISP, point.x, point.y + 1.0, point.z, 3, 0.2, 0.4, 0.2, 0.01);
+			}
+			serverWorld.spawnParticles(AscendParticles.SHADOW_SPARK, user.getX(), user.getY() + 1.0, user.getZ(), 12, 0.3, 0.5, 0.3, 0.1);
 			user.fallDistance = 0.0F;
 			user.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 60, 0, false, false, true));
-			world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.4F);
 		}
 		user.getItemCooldownManager().set(this, DASH_COOLDOWN_TICKS);
 		return TypedActionResult.success(stack, world.isClient());
+	}
+
+	@Override
+	public boolean postHit(ItemStack stack, net.minecraft.entity.LivingEntity target, net.minecraft.entity.LivingEntity attacker) {
+		if (attacker.getWorld() instanceof ServerWorld world) {
+			world.spawnParticles(AscendParticles.SHADOW_SPARK, target.getX(), target.getBodyY(0.6), target.getZ(), 6, 0.25, 0.3, 0.25, 0.12);
+		}
+		return super.postHit(stack, target, attacker);
 	}
 
 	@Override

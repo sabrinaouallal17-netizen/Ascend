@@ -1,5 +1,6 @@
 package com.ascend.client;
 
+import com.ascend.AscendParticles;
 import com.ascend.entity.AscendEntities;
 import com.ascend.logic.Achievement;
 import com.ascend.logic.Counter;
@@ -26,6 +27,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -75,6 +77,8 @@ public class AscendClient implements ClientModInitializer {
 			KeyBindingHelper.registerKeyBinding(key);
 		}
 		EntityRendererRegistry.register(AscendEntities.SHADOW_ASSASSIN, ShadowAssassinRenderer::new);
+		ParticleFactoryRegistry.getInstance().register(AscendParticles.SHADOW_WISP, ShadowParticle.WispFactory::new);
+		ParticleFactoryRegistry.getInstance().register(AscendParticles.SHADOW_SPARK, ShadowParticle.SparkFactory::new);
 
 		ClientPlayNetworking.registerGlobalReceiver(SyncPayload.ID, (payload, context) ->
 				progress = new PlayerProgress(payload.level(), payload.xp(), payload.points(),

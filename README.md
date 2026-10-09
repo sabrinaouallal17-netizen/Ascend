@@ -62,8 +62,15 @@ Nether and +30 in the End, up to 100. Higher levels mean more health and damage,
 
 ## Boss: Shadow Assassin
 
-300 HP, teleports behind its target and gets faster below half health. A boss bar shows its health, and its drops
-and drop rates are shown in chat when you meet it. Summon it with a **Shadow Sigil** (obsidian in the corners,
+300 HP, with its own sounds, glowing particles and animations. A boss bar shows its health, and its drops and drop
+rates are shown in chat when you meet it.
+
+- **Arrival**: a deep boom, a burst of shadow and a moment of darkness.
+- **Shadow Step**: teleports behind you in a cloud of shadow.
+- **Shadow Strike**: raises its blade while sparks spiral in (1s), then dashes through you for heavy damage.
+- **Shadow Clones**: raises its arms and summons 2 clones that vanish after 10s or when hit.
+- **Enraged** (below half health): roars, the boss bar turns red, it gets faster and uses abilities more often.
+- **Shadow Storm** (enraged only): hovers and spins, pulling in and hurting everyone around it. Summon it with a **Shadow Sigil** (obsidian in the corners,
 ender pearls on the sides, a Large EXP Bottle in the middle), its spawn egg, or `/summon ascend:shadow_assassin`.
 
 | Drop | Chance | Effect |

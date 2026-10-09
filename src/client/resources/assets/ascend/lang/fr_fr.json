@@ -17,5 +17,16 @@
 	"item.ascend.shadow_leggings": "Jambières des Ombres",
 	"item.ascend.shadow_boots": "Bottes des Ombres",
 	"item.ascend.shadow_sigil": "Sceau des Ombres",
-	"item.ascend.shadow_assassin_spawn_egg": "Œuf d'apparition d'Assassin des Ombres"
+	"item.ascend.shadow_assassin_spawn_egg": "Œuf d'apparition d'Assassin des Ombres",
+	"subtitles.ascend.shadow_assassin.ambient": "Shadow Assassin whispers",
+	"subtitles.ascend.shadow_assassin.hurt": "Shadow Assassin hurts",
+	"subtitles.ascend.shadow_assassin.death": "Shadow Assassin dies",
+	"subtitles.ascend.shadow_assassin.teleport": "Shadow Assassin teleports",
+	"subtitles.ascend.shadow_assassin.slash": "Shadow blade slashes",
+	"subtitles.ascend.shadow_assassin.charge": "Shadow Assassin charges",
+	"subtitles.ascend.shadow_assassin.roar": "Shadow Assassin roars",
+	"subtitles.ascend.shadow_assassin.storm": "Shadow storm swirls",
+	"subtitles.ascend.shadow_assassin.spawn": "Shadow Assassin arrives",
+	"subtitles.ascend.shadow_assassin.clone": "Shadow clones appear",
+	"subtitles.ascend.item.shadow_dagger.dash": "Shadow Dash"
 }

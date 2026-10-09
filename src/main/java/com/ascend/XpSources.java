@@ -55,7 +55,8 @@ public final class XpSources {
 		});
 
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
-			if (!(entity instanceof PlayerEntity)
+			boolean clone = entity instanceof ShadowAssassinEntity assassin && assassin.isClone();
+			if (!(entity instanceof PlayerEntity) && !clone
 					&& damageSource.getAttacker() instanceof ServerPlayerEntity player
 					&& earnsXp(player)) {
 				int level = MobLevelSystem.levelOf(entity);
