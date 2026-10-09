@@ -1,10 +1,14 @@
 package com.ascend.item;
 
 import com.ascend.Ascend;
+import com.ascend.block.AscendBlocks;
 import com.ascend.entity.AscendEntities;
 import com.ascend.logic.XpBottle;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.UnbreakableComponent;
 import net.minecraft.item.ArmorItem;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.MiningToolItem;
@@ -35,6 +39,11 @@ public final class AscendItems {
 	public static final Item SHADOW_LEGGINGS = register("shadow_leggings", armor(ArmorItem.Type.LEGGINGS));
 	public static final Item SHADOW_BOOTS = register("shadow_boots", armor(ArmorItem.Type.BOOTS));
 
+	public static final Item RAW_SHADOW = register("raw_shadow", new Item(new Item.Settings().rarity(Rarity.UNCOMMON)));
+	public static final Item SHADOW_INGOT = register("shadow_ingot", new Item(new Item.Settings().rarity(Rarity.RARE).fireproof()));
+	public static final Item SIGIL_PIECE = register("sigil_piece", new SigilPieceItem(new Item.Settings().maxCount(16).rarity(Rarity.EPIC)));
+	public static final Item SHADOW_ORE = register("shadow_ore", new BlockItem(AscendBlocks.SHADOW_ORE, new Item.Settings()));
+
 	public static final Item SHADOW_SIGIL = register("shadow_sigil",
 			new ShadowSigilItem(new Item.Settings().maxCount(16).rarity(Rarity.EPIC)));
 	public static final Item SHADOW_ASSASSIN_SPAWN_EGG = register("shadow_assassin_spawn_egg",
@@ -43,8 +52,10 @@ public final class AscendItems {
 	private AscendItems() {
 	}
 
+	/** Shadow gear: fireproof, epic and unbreakable. */
 	private static Item.Settings shadow() {
-		return new Item.Settings().fireproof().rarity(Rarity.EPIC);
+		return new Item.Settings().fireproof().rarity(Rarity.EPIC)
+				.component(DataComponentTypes.UNBREAKABLE, new UnbreakableComponent(true));
 	}
 
 	private static Item armor(ArmorItem.Type type) {
@@ -68,6 +79,7 @@ public final class AscendItems {
 			entries.add(LARGE_EXP_BOTTLE);
 			entries.add(LEGENDARY_EXP_BOTTLE);
 			entries.add(TOME_OF_REBIRTH);
+			entries.add(SIGIL_PIECE);
 			entries.add(SHADOW_SIGIL);
 			entries.add(SHADOW_PICKAXE);
 			entries.add(SHADOW_AXE);
@@ -80,5 +92,10 @@ public final class AscendItems {
 			entries.add(SHADOW_BOOTS);
 		});
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(entries -> entries.add(SHADOW_ASSASSIN_SPAWN_EGG));
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
+			entries.add(RAW_SHADOW);
+			entries.add(SHADOW_INGOT);
+		});
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(entries -> entries.add(SHADOW_ORE));
 	}
 }

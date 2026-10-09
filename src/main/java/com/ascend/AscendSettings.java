@@ -23,6 +23,10 @@ public class AscendSettings extends PersistentState {
 	public boolean levelTags = true;
 	/** Give hostile mobs random levels. */
 	public boolean mobLevels = true;
+	/** Mob levels are shown above heads only within this many blocks (always when aimed at). */
+	public int levelTagDistance = 16;
+	public static final int MIN_TAG_DISTANCE = 4;
+	public static final int MAX_TAG_DISTANCE = 64;
 
 	public static AscendSettings get(MinecraftServer server) {
 		return server.getOverworld().getPersistentStateManager().getOrCreate(TYPE, "ascend_settings");
@@ -42,6 +46,9 @@ public class AscendSettings extends PersistentState {
 		if (nbt.contains("levelTags")) {
 			settings.levelTags = nbt.getBoolean("levelTags");
 		}
+		if (nbt.contains("levelTagDistance")) {
+			settings.levelTagDistance = Math.max(MIN_TAG_DISTANCE, Math.min(MAX_TAG_DISTANCE, nbt.getInt("levelTagDistance")));
+		}
 		if (nbt.contains("mobLevels")) {
 			settings.mobLevels = nbt.getBoolean("mobLevels");
 		}
@@ -55,6 +62,7 @@ public class AscendSettings extends PersistentState {
 		nbt.putBoolean("milestones", milestones);
 		nbt.putBoolean("levelTags", levelTags);
 		nbt.putBoolean("mobLevels", mobLevels);
+		nbt.putInt("levelTagDistance", levelTagDistance);
 		return nbt;
 	}
 }

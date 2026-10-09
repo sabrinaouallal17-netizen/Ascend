@@ -198,7 +198,8 @@ public final class Progression {
 	}
 
 	private static void sendSettings(ServerPlayerEntity player) {
-		send(player, new SettingsPayload(AscendSettings.get(player.getServer()).milestones));
+		AscendSettings settings = AscendSettings.get(player.getServer());
+		send(player, new SettingsPayload(settings.milestones, settings.levelTagDistance));
 	}
 
 	private static String progressText(PlayerProgress progress) {

@@ -1,5 +1,7 @@
 package com.ascend.item;
 
+import com.ascend.AscendParticles;
+import com.ascend.AscendSounds;
 import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -32,8 +35,17 @@ public final class ShadowTools {
 			try {
 				if (held.isOf(AscendItems.SHADOW_PICKAXE)) {
 					mineArea(serverWorld, serverPlayer, pos);
+					serverWorld.playSound(null, pos, AscendSounds.SHADOW_PICKAXE_SHATTER, SoundCategory.PLAYERS, 1.0F,
+							0.9F + serverWorld.random.nextFloat() * 0.2F);
+					serverWorld.spawnParticles(AscendParticles.SHADOW_WISP, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+							25, 1.4, 1.4, 1.4, 0.02);
+					serverWorld.spawnParticles(AscendParticles.SHADOW_SPARK, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+							12, 0.6, 0.6, 0.6, 0.15);
 				} else if (held.isOf(AscendItems.SHADOW_AXE) && state.isIn(BlockTags.LOGS)) {
-					fellTree(serverWorld, serverPlayer, pos);
+					int felled = fellTree(serverWorld, serverPlayer, pos);
+					if (felled > 0) {
+						serverWorld.playSound(null, pos, AscendSounds.SHADOW_AXE_CLEAVE, SoundCategory.PLAYERS, 1.0F, 1.0F);
+					}
 				}
 			} finally {
 				breaking = false;
@@ -65,8 +77,9 @@ public final class ShadowTools {
 		}
 	}
 
-	/** Breaks every log connected to the broken one. */
-	private static void fellTree(ServerWorld world, ServerPlayerEntity player, BlockPos start) {
+	/** Breaks every log connected to the broken one, leaving a trail of shadow. @return how many logs were felled */
+	private static int fellTree(ServerWorld world, ServerPlayerEntity player, BlockPos start) {
+		int felled = 0;
 		Set<BlockPos> visited = new HashSet<>();
 		ArrayDeque<BlockPos> queue = new ArrayDeque<>();
 		queue.add(start);
@@ -78,12 +91,16 @@ public final class ShadowTools {
 				if (visited.add(next) && world.getBlockState(next).isIn(BlockTags.LOGS)) {
 					queue.add(next);
 					tryBreak(world, player, next, false);
+					felled++;
+					world.spawnParticles(AscendParticles.SHADOW_WISP, next.getX() + 0.5, next.getY() + 0.5, next.getZ() + 0.5,
+							2, 0.3, 0.3, 0.3, 0.01);
 					if (player.getMainHandStack().isEmpty()) {
-						return;
+						return felled;
 					}
 				}
 			}
 		}
+		return felled;
 	}
 
 	private static void tryBreak(ServerWorld world, ServerPlayerEntity player, BlockPos pos, boolean needsSuitableTool) {

@@ -64,5 +64,29 @@
 			"ascend:item/shadow_dash"
 		],
 		"subtitle": "subtitles.ascend.item.shadow_dagger.dash"
+	},
+	"item.shadow_pickaxe.shatter": {
+		"sounds": [
+			"ascend:item/shadow_pickaxe_shatter"
+		],
+		"subtitle": "subtitles.ascend.item.shadow_pickaxe.shatter"
+	},
+	"item.shadow_axe.cleave": {
+		"sounds": [
+			"ascend:item/shadow_axe_cleave"
+		],
+		"subtitle": "subtitles.ascend.item.shadow_axe.cleave"
+	},
+	"item.shadow_armor.equip": {
+		"sounds": [
+			"ascend:item/shadow_armor_equip"
+		],
+		"subtitle": "subtitles.ascend.item.shadow_armor.equip"
+	},
+	"item.shadow_dagger.hit": {
+		"sounds": [
+			"ascend:item/shadow_dagger_hit"
+		],
+		"subtitle": "subtitles.ascend.item.shadow_dagger.hit"
 	}
 }

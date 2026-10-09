@@ -59,6 +59,11 @@ public final class AscendCommands {
 									.then(CommandManager.argument("value", BoolArgumentType.bool())
 											.executes(context -> changeSetting(context, "levelTags", settings ->
 													settings.levelTags = BoolArgumentType.getBool(context, "value")))))
+							.then(CommandManager.literal("levelTagDistance")
+									.then(CommandManager.argument("value", IntegerArgumentType.integer(
+													AscendSettings.MIN_TAG_DISTANCE, AscendSettings.MAX_TAG_DISTANCE))
+											.executes(context -> changeSetting(context, "levelTagDistance", settings ->
+													settings.levelTagDistance = IntegerArgumentType.getInteger(context, "value")))))
 							.then(CommandManager.literal("mobLevels")
 									.then(CommandManager.argument("value", BoolArgumentType.bool())
 											.executes(context -> changeSetting(context, "mobLevels", settings ->
@@ -81,6 +86,7 @@ public final class AscendCommands {
 				.append(line("milestones", settings.milestones, "milestone rewards"))
 				.append(line("levelTags", settings.levelTags, "level above players' heads"))
 				.append(line("mobLevels", settings.mobLevels, "random levels for new hostile mobs"))
+				.append(line("levelTagDistance", settings.levelTagDistance, "blocks within which mob levels show (4 to 64)"))
 				.append(Text.literal("\nChange one with /ascend settings <name> <value>").formatted(Formatting.GRAY)), false);
 		return 1;
 	}

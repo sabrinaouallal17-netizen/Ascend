@@ -19,13 +19,17 @@
 		],
 		"client": [
 			"com.ascend.client.AscendClient"
+		],
+		"terrablender": [
+			"com.ascend.world.AscendTerraBlender"
 		]
 	},
 	"depends": {
 		"fabricloader": ">=0.16.0",
 		"minecraft": "~1.21.1",
 		"java": ">=21",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"terrablender": "*"
 	},
 	"mixins": [
 		"ascend.mixins.json",

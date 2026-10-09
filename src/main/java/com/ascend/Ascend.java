@@ -1,5 +1,6 @@
 package com.ascend;
 
+import com.ascend.block.AscendBlocks;
 import com.ascend.entity.AscendEntities;
 import com.ascend.item.AscendItems;
 import com.ascend.item.ShadowTools;
@@ -37,6 +38,7 @@ public class Ascend implements ModInitializer {
 		AscendData.init();
 		AscendSounds.init();
 		AscendParticles.init();
+		AscendBlocks.init();
 		AscendEntities.init();
 		AscendItems.init();
 		PayloadTypeRegistry.playS2C().register(SyncPayload.ID, SyncPayload.CODEC);

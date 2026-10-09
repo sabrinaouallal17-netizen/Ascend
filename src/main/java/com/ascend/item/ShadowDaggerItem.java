@@ -66,6 +66,9 @@ public class ShadowDaggerItem extends SwordItem {
 	public boolean postHit(ItemStack stack, net.minecraft.entity.LivingEntity target, net.minecraft.entity.LivingEntity attacker) {
 		if (attacker.getWorld() instanceof ServerWorld world) {
 			world.spawnParticles(AscendParticles.SHADOW_SPARK, target.getX(), target.getBodyY(0.6), target.getZ(), 6, 0.25, 0.3, 0.25, 0.12);
+			world.spawnParticles(AscendParticles.SHADOW_WISP, target.getX(), target.getBodyY(0.5), target.getZ(), 4, 0.2, 0.3, 0.2, 0.02);
+			world.playSound(null, target.getBlockPos(), AscendSounds.SHADOW_DAGGER_HIT, net.minecraft.sound.SoundCategory.PLAYERS,
+					0.8F, 0.9F + world.random.nextFloat() * 0.3F);
 		}
 		return super.postHit(stack, target, attacker);
 	}

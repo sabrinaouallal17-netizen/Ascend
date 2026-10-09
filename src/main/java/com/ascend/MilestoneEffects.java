@@ -32,6 +32,9 @@ public final class MilestoneEffects {
 				}
 				if (AscendItems.wearsFullShadowSet(player)) {
 					keep(player, StatusEffects.SPEED);
+					// Shadow aura around the wearer, visible to everyone.
+					player.getServerWorld().spawnParticles(AscendParticles.SHADOW_WISP, player.getX(), player.getY() + 0.2,
+							player.getZ(), 2, 0.35, 0.1, 0.35, 0.01);
 				}
 				Set<Milestone> milestones = Progression.milestones(player);
 				if (milestones.contains(Milestone.NIGHT_EYES)) {

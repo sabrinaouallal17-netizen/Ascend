@@ -1,6 +1,7 @@
 package com.ascend.item;
 
 import com.ascend.Ascend;
+import com.ascend.AscendSounds;
 import java.util.EnumMap;
 import java.util.List;
 import net.minecraft.item.ArmorItem;
@@ -10,7 +11,6 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Util;
 
 /** Shadow armor material: a bit tougher than netherite. */
@@ -26,7 +26,7 @@ public final class ShadowArmor {
 						defense.put(ArmorItem.Type.BODY, 11);
 					}),
 					20,
-					SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE,
+					AscendSounds.SHADOW_ARMOR_EQUIP,
 					() -> Ingredient.ofItems(Items.NETHERITE_INGOT),
 					List.of(new ArmorMaterial.Layer(Ascend.id("shadow"))),
 					4.0F,

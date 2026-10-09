@@ -1,0 +1,12 @@
+{
+	"type": "minecraft:smelting",
+	"category": "misc",
+	"ingredient": {
+		"item": "ascend:raw_shadow"
+	},
+	"result": {
+		"id": "ascend:shadow_ingot"
+	},
+	"experience": 1.0,
+	"cookingtime": 200
+}

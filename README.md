@@ -2,6 +2,9 @@
 
 An RPG leveling mod for **Minecraft 1.21.1** (Fabric).
 
+**Requires:** [Fabric API](https://modrinth.com/mod/fabric-api) and [TerraBlender](https://modrinth.com/mod/terrablender)
+(for the Shadow Wastes biome).
+
 ## How it works
 
 - **Earn XP** (separate from vanilla XP):
@@ -37,7 +40,7 @@ Learn skills with skill points in the Skills tab, then put them in a slot. Use t
 
 ## Mob levels
 
-Hostile mobs get a random level (shown above their heads): higher far from spawn (+1 per 150 blocks), +15 in the
+Hostile mobs get a random level (shown above their heads when you are within 16 blocks): higher far from spawn (+1 per 150 blocks), +15 in the
 Nether and +30 in the End, up to 100. Higher levels mean more health and damage, and more XP. Level 50+ mobs are elites.
 
 ## Achievements
@@ -70,16 +73,32 @@ rates are shown in chat when you meet it.
 - **Shadow Strike**: raises its blade while sparks spiral in (1s), then dashes through you for heavy damage.
 - **Shadow Clones**: raises its arms and summons 2 clones that vanish after 10s or when hit.
 - **Enraged** (below half health): roars, the boss bar turns red, it gets faster and uses abilities more often.
-- **Shadow Storm** (enraged only): hovers and spins, pulling in and hurting everyone around it. Summon it with a **Shadow Sigil** (obsidian in the corners,
-ender pearls on the sides, a Large EXP Bottle in the middle), its spawn egg, or `/summon ascend:shadow_assassin`.
+- **Shadow Storm** (enraged only): hovers and spins, pulling in and hurting everyone around it. Summon it with a **Shadow Sigil**, its spawn egg, or `/summon ascend:shadow_assassin`.
+
+### Getting the Shadow Sigil
+
+1. Find the **Shadow Wastes**: a dark biome of blackstone and basalt with purple fog and floating shadow wisps.
+2. Mine **Shadow Ore** there (diamond pickaxe or better). It drops **Raw Shadow**; smelt it into **Shadow Ingots**.
+3. Climb the **Shadow Towers** that rise from the Shadow Wastes: 120 blocks of spiral staircase guarded by spawners.
+   The chest at the very top always holds a **Sigil Piece**.
+4. Craft the sigil:
+
+```
+Sigil Piece  | Shadow Ingot | Sigil Piece
+Shadow Ingot | Eye of Ender | Shadow Ingot
+Shadow Ingot | Sigil Piece  | Shadow Ingot
+```
 
 | Drop | Chance | Effect |
 |---|---|---|
 | Shadow Dagger | 25% | 13 damage (+5 over a netherite sword). Right-click: **Shadow Dash** (dash 8 blocks, 3s invisibility, 5s cooldown) |
 | Shadow Pickaxe | 15% | Mines a 6x6 area (sneak for one block) |
 | Shadow Axe | 15% | Fells the whole tree (sneak for one log) |
-| Shadow Helmet / Chestplate / Leggings / Boots | 20% each | A bit tougher than netherite. Full set: Speed I |
+| Shadow Helmet / Chestplate / Leggings / Boots | 20% each | A bit tougher than netherite. Full set: Speed I and a shadow aura |
 | Legendary EXP Bottle | 100% | +2,000 XP |
+
+All Shadow gear is **unbreakable** and has its own sounds and particles (dagger hits, 6x6 shattering, tree cleaving,
+armor equip).
 
 ## Items
 
@@ -103,6 +122,7 @@ Operators can change these per world with `/ascend settings` (lists them) and `/
 | `milestones` | `true` | Enable milestone rewards. |
 | `levelTags` | `true` | Show [Lv X] above players' heads. |
 | `mobLevels` | `true` | Give new hostile mobs random levels. |
+| `levelTagDistance` | `16` | Mob levels show above heads only within this many blocks (4 to 64), or when you aim at the mob. |
 
 ## Commands (operators)
 

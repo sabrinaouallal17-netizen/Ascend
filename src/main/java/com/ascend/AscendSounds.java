@@ -2,6 +2,7 @@ package com.ascend;
 
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
@@ -18,6 +19,12 @@ public final class AscendSounds {
 	public static final SoundEvent BOSS_SPAWN = register("shadow_assassin.spawn");
 	public static final SoundEvent BOSS_CLONE = register("shadow_assassin.clone");
 	public static final SoundEvent SHADOW_DASH = register("item.shadow_dagger.dash");
+	public static final SoundEvent SHADOW_DAGGER_HIT = register("item.shadow_dagger.hit");
+	public static final SoundEvent SHADOW_PICKAXE_SHATTER = register("item.shadow_pickaxe.shatter");
+	public static final SoundEvent SHADOW_AXE_CLEAVE = register("item.shadow_axe.cleave");
+	/** A registry entry, because armor materials need one for their equip sound. */
+	public static final RegistryEntry<SoundEvent> SHADOW_ARMOR_EQUIP = Registry.registerReference(Registries.SOUND_EVENT,
+			Ascend.id("item.shadow_armor.equip"), SoundEvent.of(Ascend.id("item.shadow_armor.equip")));
 
 	private AscendSounds() {
 	}

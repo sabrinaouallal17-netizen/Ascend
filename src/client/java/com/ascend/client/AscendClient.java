@@ -57,6 +57,8 @@ public class AscendClient implements ClientModInitializer {
 	/** Levels of the players around, shown above their heads (0 = hidden). */
 	public static final Map<UUID, Integer> LEVELS = new ConcurrentHashMap<>();
 	public static boolean milestonesEnabled = true;
+	/** Mob level tags show only within this many blocks (synced from the world setting). */
+	public static int levelTagDistance = 16;
 	public static long clientTicks;
 
 	private boolean jumpWasPressed;
@@ -107,8 +109,10 @@ public class AscendClient implements ClientModInitializer {
 		});
 		ClientPlayNetworking.registerGlobalReceiver(LevelTagPayload.ID, (payload, context) ->
 				LEVELS.put(payload.player(), payload.level()));
-		ClientPlayNetworking.registerGlobalReceiver(SettingsPayload.ID, (payload, context) ->
-				milestonesEnabled = payload.milestones());
+		ClientPlayNetworking.registerGlobalReceiver(SettingsPayload.ID, (payload, context) -> {
+			milestonesEnabled = payload.milestones();
+			levelTagDistance = payload.levelTagDistance();
+		});
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
 			LEVELS.clear();
 			SKILL_READY_AT.clear();

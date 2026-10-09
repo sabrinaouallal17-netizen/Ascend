@@ -28,5 +28,14 @@
 	"subtitles.ascend.shadow_assassin.storm": "Shadow storm swirls",
 	"subtitles.ascend.shadow_assassin.spawn": "Shadow Assassin arrives",
 	"subtitles.ascend.shadow_assassin.clone": "Shadow clones appear",
-	"subtitles.ascend.item.shadow_dagger.dash": "Shadow Dash"
+	"subtitles.ascend.item.shadow_dagger.dash": "Shadow Dash",
+	"subtitles.ascend.item.shadow_pickaxe.shatter": "Shadow Pickaxe shatters stone",
+	"subtitles.ascend.item.shadow_axe.cleave": "Shadow Axe cleaves a tree",
+	"subtitles.ascend.item.shadow_armor.equip": "Shadow armor equipped",
+	"subtitles.ascend.item.shadow_dagger.hit": "Shadow Dagger strikes",
+	"block.ascend.shadow_ore": "Shadow Ore",
+	"item.ascend.raw_shadow": "Raw Shadow",
+	"item.ascend.shadow_ingot": "Shadow Ingot",
+	"item.ascend.sigil_piece": "Sigil Piece",
+	"biome.ascend.shadow_wastes": "Shadow Wastes"
 }
