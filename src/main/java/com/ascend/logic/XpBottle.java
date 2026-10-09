@@ -1,9 +1,10 @@
 package com.ascend.logic;
 
-/** The Ascend EXP Bottle. */
+/** Ascend XP given by each EXP bottle. */
 public final class XpBottle {
-	/** Ascend XP given by one bottle. */
-	public static final int XP = 100;
+	public static final int SMALL = 100;
+	public static final int LARGE = 500;
+	public static final int LEGENDARY = 2_000;
 
 	private XpBottle() {
 	}

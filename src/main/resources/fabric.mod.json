@@ -3,7 +3,7 @@
 	"id": "ascend",
 	"version": "${version}",
 	"name": "Ascend",
-	"description": "An RPG leveling mod: earn XP by mining, fighting and farming, level up to 200 and spend skill points on your stats.",
+	"description": "An RPG leveling mod: earn XP by mining, fighting, farming, fishing, trading and exploring, level up to 200, spend skill points on your stats and unlock milestones.",
 	"authors": [
 		"Miiso",
 		"Syntra"
@@ -26,5 +26,12 @@
 		"minecraft": "~1.21.1",
 		"java": ">=21",
 		"fabric-api": "*"
-	}
+	},
+	"mixins": [
+		"ascend.mixins.json",
+		{
+			"config": "ascend.client.mixins.json",
+			"environment": "client"
+		}
+	]
 }

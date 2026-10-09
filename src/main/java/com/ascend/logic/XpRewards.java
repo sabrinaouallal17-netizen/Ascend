@@ -13,6 +13,12 @@ public final class XpRewards {
 	public static final int EMERALD = 20;
 	public static final int ANCIENT_DEBRIS = 30;
 	public static final int CROP = 1;
+	public static final int FISHING = 5;
+	public static final int TRADE = 3;
+	/** Per enchantment level spent at the enchanting table. */
+	public static final int ENCHANT_PER_LEVEL = 2;
+	public static final int BREEDING = 4;
+	public static final int NEW_BIOME = 10;
 
 	private XpRewards() {
 	}

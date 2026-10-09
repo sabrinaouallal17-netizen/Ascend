@@ -75,12 +75,23 @@ public final class PlayerProgress {
 		level = Math.max(1, Math.min(Leveling.MAX_LEVEL, newLevel));
 		xp = 0;
 		int earned = level - 1;
-		int spent = Arrays.stream(stats).sum();
+		int spent = spentPoints();
 		if (spent > earned) {
 			Arrays.fill(stats, 0);
 			spent = 0;
 		}
 		points = earned - spent;
+	}
+
+	/** Total points currently spent in stats. */
+	public int spentPoints() {
+		return Arrays.stream(stats).sum();
+	}
+
+	/** Gives back every spent point (Tome of Rebirth). */
+	public void respec() {
+		points += spentPoints();
+		Arrays.fill(stats, 0);
 	}
 
 	public boolean canSpend(Stat stat) {

@@ -1,7 +1,6 @@
 package com.ascend.item;
 
 import com.ascend.Progression;
-import com.ascend.logic.XpBottle;
 import java.util.List;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -18,10 +17,13 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-/** Ascend EXP Bottle: right-click to gain Ascend XP and get the empty bottle back. */
+/** Ascend EXP Bottles (small, large, legendary): right-click to gain Ascend XP and get the empty bottle back. */
 public class ExpBottleItem extends Item {
-	public ExpBottleItem(Settings settings) {
+	private final int xp;
+
+	public ExpBottleItem(Settings settings, int xp) {
 		super(settings);
+		this.xp = xp;
 	}
 
 	@Override
@@ -32,7 +34,7 @@ public class ExpBottleItem extends Item {
 				player.sendMessage(Text.literal("You are already max level!").formatted(Formatting.GOLD), true);
 				return TypedActionResult.fail(stack);
 			}
-			Progression.addXp(player, XpBottle.XP);
+			Progression.addXp(player, xp);
 			world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 1.0F, 0.8F);
 		}
 		return TypedActionResult.success(ItemUsage.exchangeStack(stack, user, new ItemStack(Items.GLASS_BOTTLE)), world.isClient());
@@ -45,7 +47,7 @@ public class ExpBottleItem extends Item {
 
 	@Override
 	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-		tooltip.add(Text.literal("+" + XpBottle.XP + " Ascend XP").formatted(Formatting.GREEN));
+		tooltip.add(Text.literal("+" + xp + " Ascend XP").formatted(Formatting.GREEN));
 		tooltip.add(Text.literal("Right-click to drink").formatted(Formatting.GRAY));
 	}
 }

@@ -1,5 +1,8 @@
 {
 	"key.ascend.character": "Ouvrir l'écran du personnage",
 	"category.ascend": "Ascend",
-	"item.ascend.exp_bottle": "Bouteille d'EXP Ascend"
+	"item.ascend.exp_bottle": "Bouteille d'EXP Ascend",
+	"item.ascend.large_exp_bottle": "Grande bouteille d'EXP Ascend",
+	"item.ascend.legendary_exp_bottle": "Bouteille d'EXP Ascend légendaire",
+	"item.ascend.tome_of_rebirth": "Tome de Renaissance"
 }

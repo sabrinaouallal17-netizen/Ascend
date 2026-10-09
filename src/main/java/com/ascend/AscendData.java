@@ -3,7 +3,10 @@ package com.ascend;
 import com.ascend.logic.PlayerProgress;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 
@@ -23,6 +26,13 @@ public final class AscendData {
 			.copyOnDeath()
 			.initializer(PlayerProgress::new)
 			.buildAndRegister(Ascend.id("progress"));
+
+	/** Biomes the player has already discovered (each gives XP once). */
+	public static final AttachmentType<Set<String>> BIOMES = AttachmentRegistry.<Set<String>>builder()
+			.persistent(Codec.STRING.listOf().xmap(list -> (Set<String>) new HashSet<>(list), set -> new ArrayList<>(set)))
+			.copyOnDeath()
+			.initializer(HashSet::new)
+			.buildAndRegister(Ascend.id("biomes"));
 
 	private AscendData() {
 	}

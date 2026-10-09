@@ -1,6 +1,7 @@
 package com.ascend.client;
 
 import com.ascend.logic.Leveling;
+import com.ascend.logic.Milestone;
 import com.ascend.logic.PlayerProgress;
 import com.ascend.logic.Stat;
 import com.ascend.network.SpendPayload;
@@ -15,9 +16,10 @@ import net.minecraft.text.Text;
 
 /** The character screen (K): level, XP bar, skill points and the four stats. */
 public class CharacterScreen extends Screen {
-	private static final int PANEL_WIDTH = 240;
-	private static final int PANEL_HEIGHT = 190;
-	private static final int ROW_HEIGHT = 26;
+	private static final int PANEL_WIDTH = 260;
+	private static final int PANEL_HEIGHT = 246;
+	private static final int ROW_HEIGHT = 22;
+	private static final int MILESTONE_ROW = 12;
 	private static final int GOLD = 0xFFFFAA00;
 	private static final int WHITE = 0xFFFFFFFF;
 	private static final int GRAY = 0xFFAAAAAA;
@@ -41,7 +43,7 @@ public class CharacterScreen extends Screen {
 	protected void init() {
 		plusButtons.clear();
 		for (Stat stat : Stat.values()) {
-			int y = top() + 78 + stat.ordinal() * ROW_HEIGHT;
+			int y = top() + 72 + stat.ordinal() * ROW_HEIGHT;
 			plusButtons.add(addDrawableChild(ButtonWidget.builder(Text.literal("+"),
 					button -> ClientPlayNetworking.send(new SpendPayload(stat.ordinal())))
 					.dimensions(left() + PANEL_WIDTH - 32, y - 4, 20, 20).build()));
@@ -88,14 +90,23 @@ public class CharacterScreen extends Screen {
 		context.drawCenteredTextWithShadow(textRenderer, Text.literal(xpText), width / 2, barTop + 9, GRAY);
 
 		context.drawTextWithShadow(textRenderer, Text.literal("Skill points: " + progress.points()),
-				left + 20, top + 60, progress.points() > 0 ? GREEN : GRAY);
+				left + 20, top + 56, progress.points() > 0 ? GREEN : GRAY);
 
 		for (Stat stat : Stat.values()) {
-			int y = top + 78 + stat.ordinal() * ROW_HEIGHT;
+			int y = top + 72 + stat.ordinal() * ROW_HEIGHT;
 			int points = progress.stat(stat);
 			context.drawTextWithShadow(textRenderer, Text.literal(stat.displayName()), left + 20, y, WHITE);
 			context.drawTextWithShadow(textRenderer, Text.literal(points + "/" + Stat.CAP), left + 95, y, GRAY);
 			context.drawTextWithShadow(textRenderer, Text.literal(bonusText(stat, points)), left + 135, y, GREEN);
+		}
+
+		int milestonesTop = top + 72 + Stat.values().length * ROW_HEIGHT + 4;
+		context.drawTextWithShadow(textRenderer, Text.literal("Milestones"), left + 20, milestonesTop, GOLD);
+		for (Milestone milestone : Milestone.values()) {
+			int y = milestonesTop + 14 + milestone.ordinal() * MILESTONE_ROW;
+			boolean unlocked = milestone.unlockedAt(progress.level());
+			String line = (unlocked ? "✔ " : "Lv " + milestone.level() + " ") + milestone.title() + ": " + milestone.description();
+			context.drawTextWithShadow(textRenderer, Text.literal(line), left + 20, y, unlocked ? GREEN : GRAY);
 		}
 	}
 

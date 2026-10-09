@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "com.ascend.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"BredAnimalsCriterionMixin",
+		"EnchantedItemCriterionMixin",
+		"FishingRodHookedCriterionMixin",
+		"VillagerTradeCriterionMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

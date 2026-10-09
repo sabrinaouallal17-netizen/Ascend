@@ -4,7 +4,7 @@ package com.ascend.logic;
 public enum Stat {
 	/** +0.1 attack damage per point. */
 	STRENGTH("Strength", 0.1),
-	/** +0.4 max health per point (50 points = 10 hearts). */
+	/** +0.4 max health per point (75 points = 15 hearts). */
 	VITALITY("Vitality", 0.4),
 	/** +0.4% movement speed per point. */
 	AGILITY("Agility", 0.004),
@@ -12,7 +12,7 @@ public enum Stat {
 	MINING("Mining", 0.01);
 
 	/** Maximum points in one stat. */
-	public static final int CAP = 50;
+	public static final int CAP = 75;
 
 	private final String displayName;
 	private final double perPoint;

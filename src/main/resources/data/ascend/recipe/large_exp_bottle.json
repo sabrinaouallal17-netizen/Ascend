@@ -1,0 +1,25 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"category": "misc",
+	"ingredients": [
+		{
+			"item": "ascend:exp_bottle"
+		},
+		{
+			"item": "ascend:exp_bottle"
+		},
+		{
+			"item": "ascend:exp_bottle"
+		},
+		{
+			"item": "ascend:exp_bottle"
+		},
+		{
+			"item": "ascend:exp_bottle"
+		}
+	],
+	"result": {
+		"id": "ascend:large_exp_bottle",
+		"count": 1
+	}
+}

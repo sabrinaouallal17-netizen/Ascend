@@ -1,0 +1,24 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"pattern": [
+		"LDL",
+		"DBD",
+		"LDL"
+	],
+	"key": {
+		"L": {
+			"item": "ascend:large_exp_bottle"
+		},
+		"D": {
+			"item": "minecraft:diamond"
+		},
+		"B": {
+			"item": "minecraft:book"
+		}
+	},
+	"result": {
+		"id": "ascend:tome_of_rebirth",
+		"count": 1
+	}
+}

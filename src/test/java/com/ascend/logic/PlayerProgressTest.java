@@ -115,4 +115,18 @@ class PlayerProgressTest {
 		assertEquals(1, progress.level());
 		assertEquals(0, progress.points());
 	}
+
+	@Test
+	void respecRefundsEverything() {
+		PlayerProgress progress = new PlayerProgress();
+		progress.setLevel(21);
+		for (int i = 0; i < 5; i++) {
+			progress.spend(Stat.MINING);
+		}
+		progress.spend(Stat.VITALITY);
+		assertEquals(6, progress.spentPoints());
+		progress.respec();
+		assertEquals(0, progress.spentPoints());
+		assertEquals(20, progress.points());
+	}
 }
